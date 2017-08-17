@@ -1,9 +1,0 @@
-*.log
-bower_components/
-core
-dist.tar.gz
-dist/
-home.html
-node_modules/
-vulcanized.html
-.pi-lib/

@@ -1,0 +1,36 @@
+  <header
+    fxLayout="row"
+    fxLayoutAlign="space-between center">
+
+    <div
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      fxLayoutGap="16px">
+
+      <paper-icon-button
+        (click)="toggleSidebar()"
+        icon="menu">
+      </paper-icon-button>
+
+      <h2>
+        <code>angular-lib</code> Demo App
+        <span *ngIf="pageState.title"> &bull; {{pageState.title}}</span>
+      </h2>
+
+    </div>
+
+    <div
+      fxLayout="row"
+      fxLayoutAlign="end center"
+      fxLayoutGap="16px">
+
+      <lib-toolbar-controls>
+      </lib-toolbar-controls>
+
+      <lib-gravatar
+        [src]="userState.gravatar">
+      </lib-gravatar>
+
+    </div>
+
+  </header>
