@@ -1,5 +1,5 @@
 {
-  "name": "angular-lib",
+  "name": "startwire-angular-lib",
   "dependencies": {
     "iron-collapse": "PolymerElements/iron-collapse#^2.0.0",
     "iron-icon": "PolymerElements/iron-icon#^2.0.0",
