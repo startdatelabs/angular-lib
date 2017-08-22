@@ -11,6 +11,7 @@ import { LibModule } from './lib';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { NoopPageComponent } from './pages/noop/page';
 import { NoopPageModule } from './pages/noop/module';
+import { RandomNavigatorGuard } from './guards/random-navigator';
 import { RootComponent } from './pages/root';
 import { SidebarComponent } from './pages/sidebar';
 import { SplashPageComponent } from './pages/splash/page';
@@ -67,7 +68,8 @@ const ROUTES: Routes = [
 ];
 
 const SERVICES = [
-  HighlightJsService
+  HighlightJsService,
+  RandomNavigatorGuard
 ];
 
 @NgModule({

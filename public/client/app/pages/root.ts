@@ -13,6 +13,7 @@ import { EnvService } from '../lib/services/env';
 import { LifecycleComponent } from '../lib/components/lifecycle-component';
 import { NavigatorItem } from '../lib/components/navigator';
 import { Observable } from 'rxjs/Observable';
+import { RandomNavigatorGuard } from '../guards/random-navigator';
 import { Store } from '@ngrx/store';
 import { badge } from '../lib/actions/navigator';
 import { config } from '../config';
@@ -108,7 +109,15 @@ const NAVIGATOR_ITEMS: NavigatorItem[] = [
     group: 'Reducers',
     tooltip: 'Test user state by manual entry of parameters',
     sticky: false
-  })
+  }),
+
+  // random!!
+
+  new NavigatorItem('/noop', 'random', 'Noop page', {
+    canNavigate: [RandomNavigatorGuard],
+    tooltip: 'Test user state by manual entry of parameters',
+    sticky: false
+  }),
 
 ];
 

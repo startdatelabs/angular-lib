@@ -2,7 +2,7 @@ import * as navigator from '../reducers/navigator';
 import * as page from '../actions/page';
 import * as router from '@ngrx/router-store';
 
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -33,6 +33,7 @@ export class NavigatorItemNodeFinder {
 }
 
 export class NavigatorItemOptions {
+  canNavigate?: any[];
   group?: string;
   annotations?: NavigatorItemAnnotation[];
   nodeFinders?: NavigatorItemNodeFinder[];
@@ -46,6 +47,10 @@ export class NavigatorGroupMap {
 
 export class NavigatorPathMap {
   [path: string]: NavigatorItem;
+}
+
+export interface CanNavigate {
+  canNavigate(): boolean;
 }
 
 /**
@@ -68,10 +73,14 @@ export class NavigatorComponent {
   itemsByGroup = new NavigatorGroupMap();
   itemsByPath = new NavigatorPathMap();
 
+  /** ctor */
+  constructor(private injector: Injector) { }
+
   // property accessors / mutators
 
   @Input() set navigatorItems(items: NavigatorItem[]) {
     if (items) {
+      items = items.filter(item => this.canNavigate(item));
       this.itemsByGroup = items.reduce((acc, item) => {
         const group = item.options.group || '';
         (acc[group] = (acc[group] || [])).push(item);
@@ -83,6 +92,17 @@ export class NavigatorComponent {
       }, new NavigatorPathMap());
       this.groups = Object.keys(this.itemsByGroup);
     }
+  }
+
+  // private methods
+
+  private canNavigate(item: NavigatorItem): boolean {
+    if (!item.options.canNavigate)
+      return true;
+    else return item.options.canNavigate.reduce((acc, clazz) => {
+      const guard = this.injector.get(clazz);
+      return acc && guard.canNavigate();
+    }, true);
   }
 
 }
