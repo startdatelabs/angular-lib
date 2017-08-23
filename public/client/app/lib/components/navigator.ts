@@ -1,9 +1,15 @@
+import 'rxjs/add/observable/from';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/combineLatest';
+import 'rxjs/add/operator/mergeMap';
+
 import * as navigator from '../reducers/navigator';
 import * as page from '../actions/page';
 import * as router from '@ngrx/router-store';
 
 import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
 
+import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { expando } from '../actions/navigator';
@@ -50,7 +56,7 @@ export class NavigatorPathMap {
 }
 
 export interface CanNavigate {
-  canNavigate(): boolean;
+  canNavigate(): Observable<boolean>;
 }
 
 /**
@@ -79,30 +85,36 @@ export class NavigatorComponent {
   // property accessors / mutators
 
   @Input() set navigatorItems(items: NavigatorItem[]) {
-    if (items) {
-      items = items.filter(item => this.canNavigate(item));
-      this.itemsByGroup = items.reduce((acc, item) => {
+    this.groups = [];
+    this.itemsByGroup = new NavigatorGroupMap();
+    this.itemsByPath = new NavigatorPathMap();
+    Observable.from(items || [])
+      .mergeMap(item => Observable.of(item).combineLatest(this.canNavigate(item)))
+      .map((args: any) => [args[0], args.slice(1)])
+      .filter(([item, flags]) => !flags.length || flags.every(can => can))
+      .map(([item, flags]) => <NavigatorItem>item)
+      .subscribe(item => {
         const group = item.options.group || '';
-        (acc[group] = (acc[group] || [])).push(item);
-        return acc;
-      }, new NavigatorGroupMap());
-      this.itemsByPath = items.reduce((acc, item) => {
-        acc[item.path] = item;
-        return acc;
-      }, new NavigatorPathMap());
-      this.groups = Object.keys(this.itemsByGroup);
-    }
+        let items = this.itemsByGroup[group];
+        if (!items) {
+          items = [];
+          this.itemsByGroup[group] = items;
+          this.groups.push(group);
+        }
+        items.push(item);
+        this.itemsByPath[item.path] = item;
+      });
   }
 
   // private methods
 
-  private canNavigate(item: NavigatorItem): boolean {
+  private canNavigate(item: NavigatorItem): Observable<boolean>[] {
     if (!item.options.canNavigate)
-      return true;
-    else return item.options.canNavigate.reduce((acc, clazz) => {
+      return [];
+    else return item.options.canNavigate.map(clazz => {
       const guard = this.injector.get(clazz);
-      return acc && guard.canNavigate();
-    }, true);
+      return guard.canNavigate();
+    });
   }
 
 }

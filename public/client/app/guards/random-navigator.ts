@@ -1,5 +1,8 @@
+import 'rxjs/add/observable/of';
+
 import { CanNavigate } from '../lib/components/navigator';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 /**
  * Just a random test guard
@@ -8,8 +11,8 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class RandomNavigatorGuard implements CanNavigate {
 
-  canNavigate(): boolean {
-    return Math.random() > 0.5;
+  canNavigate(): Observable<boolean> {
+    return Observable.of(Math.random() > 0.5);
   }
 
 }
