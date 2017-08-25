@@ -92,7 +92,7 @@ export class NavigatorComponent {
     Observable.from(items || [])
       .mergeMap(item => Observable.of(item).combineLatest(this.canNavigate(item)))
       .map((args: any) => [args[0], args.slice(1)])
-      .filter(([item, flags]) => !flags.length || flags.every(can => can))
+      .filter(([item, flags]) => flags.every(can => can))
       .map(([item, flags]) => <NavigatorItem>item)
       .subscribe(item => {
         const group = item.options.group || '';
