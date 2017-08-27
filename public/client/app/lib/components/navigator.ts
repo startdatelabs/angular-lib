@@ -40,6 +40,12 @@ export class NavigatorItemNodeFinder {
 }
 
 export class NavigatorItemOptions {
+  // TODO: why doesn't this work?
+  // trips: Property 'canNavigate' is missing in type 'typeof RandomNavigatorGuard'
+  // canNavigate?: CanNavigate[];
+  // well -- I'm not going to worry about it because the Angular team has to
+  // do exactly the same in interface Route -- see:
+  // https://github.com/angular/angular/blob/master/packages/router/src/config.ts
   canNavigate?: any[];
   group?: string;
   annotations?: NavigatorItemAnnotation[];
@@ -57,7 +63,7 @@ export class NavigatorPathMap {
 }
 
 export interface CanNavigate {
-  canNavigate(): Observable<boolean>;
+  canNavigate: () => Observable<boolean>;
 }
 
 /**
