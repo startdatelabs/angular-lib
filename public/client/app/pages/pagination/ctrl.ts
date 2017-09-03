@@ -46,8 +46,9 @@ export class TestCtrlComponent extends LifecycleComponent {
 
   // bind OnChange handlers
 
-  @OnChange('filter', 'state') load(changed: boolean[]) {
-    const reset = changed[0];
+  @OnChange('filter', 'state') doLoad(changedFilter: boolean,
+                                      changedState: boolean) {
+    const reset = changedFilter;
     if (this.filter && this.filter.submitted && this.state) {
       nextTick(() => this.store.dispatch(statusText('Loading test data ... please standby')));
       this.loading.emit(true);
@@ -77,7 +78,7 @@ export class TestCtrlComponent extends LifecycleComponent {
         .subscribe((item: TestDataItem) => {
           this.store.dispatch(statusText(`Saved item ${this.update.values.id}`));
           this.saving.emit(false);
-          this.load([false]);
+          this.load(false, false);
         });
     }
   }
