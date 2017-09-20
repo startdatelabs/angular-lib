@@ -82,7 +82,7 @@ export class ExportableDataComponent extends LifecycleComponent {
     this.results = [this.headers];
     // freeze the filter & state and start downloading
     this.frozenFilter = Object.assign({}, this.filter.values);
-    this.frozenState = Object.assign({}, this.state, {index: 0});
+    this.frozenState = Object.assign({}, this.state, {index: 0, stride: this.stride});
     if (this.datasource)
       this.step();
     else this.suck();
@@ -130,7 +130,7 @@ export class ExportableDataComponent extends LifecycleComponent {
 
   private suck() {
     this.cdf.markForCheck();
-    // eveeything is in the page we were given
+    // everything is in the page we were given
     this.complete = true;
     this.eta = 0;
     this.ready = false;

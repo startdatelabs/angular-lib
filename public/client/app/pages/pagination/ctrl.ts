@@ -46,8 +46,8 @@ export class TestCtrlComponent extends LifecycleComponent {
 
   // bind OnChange handlers
 
-  @OnChange('filter', 'state') doLoad(changedFilter: boolean,
-                                      changedState: boolean) {
+  @OnChange('filter', 'state') load(changedFilter: boolean,
+                                    changedState: boolean) {
     const reset = changedFilter;
     if (this.filter && this.filter.submitted && this.state) {
       nextTick(() => this.store.dispatch(statusText('Loading test data ... please standby')));
