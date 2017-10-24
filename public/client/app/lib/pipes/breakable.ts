@@ -20,7 +20,7 @@ export class BreakablePipe implements PipeTransform {
     if ((s === null) || (s === undefined))
       return dflt;
     else if (typeof s.replace === 'function')
-      return s.replace(/([\/;:\)\]\}\d\.,_])/g, '\u200b$1');
+      return s.replace(/([\/;:\)\]\}\d\.,_%])/g, '\u200b$1');
     else return s;
   }
 
