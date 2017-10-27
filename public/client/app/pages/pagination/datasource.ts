@@ -88,7 +88,7 @@ export class TestDataSourceService extends PagedDataSourceService {
     return this.testData.filter((item: PagedDataItem) => {
       let ok = true;
       Object.keys(filter).forEach(key => {
-        ok = ok && (item[key].indexOf(filter[key]) > 0);
+        ok = ok && ((filter[key] === null) || (item[key].indexOf(filter[key]) >= 0));
       });
       return ok;
     });
