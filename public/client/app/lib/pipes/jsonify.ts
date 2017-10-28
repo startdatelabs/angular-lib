@@ -16,7 +16,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class JSONifyPipe implements PipeTransform {
 
   transform(s: string): string {
-    if ((s === null) || (s === undefined))
+    if (s == null) 
       return '';
     else if (Array.isArray(s) || (typeof s === 'object'))
       return `${JSON.stringify(s, null, ' ').replace(new RegExp('"', 'g'), '')}`;

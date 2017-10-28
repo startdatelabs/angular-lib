@@ -22,7 +22,7 @@ export class ExportToCSVComponent {
       // first convert data array to CSV
       const csv = data.map(row => {
         const items = row.map(col => {
-          if ((col === null) || (col === undefined))
+          if (col == null)
             return '';
           else if (Array.isArray(col) || (typeof col === 'object'))
             return `"${JSON.stringify(col).replace(new RegExp('"', 'g'), '')}"`;

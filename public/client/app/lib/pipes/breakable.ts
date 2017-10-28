@@ -17,7 +17,7 @@ export class BreakablePipe implements PipeTransform {
 
   transform(s: string,
             dflt = ''): string {
-    if ((s === null) || (s === undefined))
+    if (s == null)
       return dflt;
     else if (typeof s.replace === 'function')
       return s.replace(/([\/;:\)\]\}\d\.,_%])/g, '\u200b$1');
