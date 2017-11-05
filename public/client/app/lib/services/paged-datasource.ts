@@ -1,4 +1,4 @@
-import 'rxjs/add/observable/from';
+import 'rxjs/add/observable/of';
 
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -40,7 +40,7 @@ export class PagedDataSourceService {
   load(state: PagedDataState,
        filter: PolymerFormValuesMap,
        reset: boolean): Observable<PagedData> {
-    return Observable.from([]);
+    return Observable.of();
   }
 
   /** Designed to be overriden */

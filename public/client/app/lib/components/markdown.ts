@@ -1,5 +1,5 @@
 import { } from '@types/marked';
-import 'rxjs/add/observable/from';
+import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 
 import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
@@ -41,7 +41,7 @@ export class MarkdownComponent extends LifecycleComponent {
   @Input() set src(uri: string) {
     if (uri) {
       const cached = MarkdownComponent.cache[uri];
-      this.subToLoader = (cached? Observable.from([cached]) : this.http.get(uri))
+      this.subToLoader = (cached? Observable.of(cached) : this.http.get(uri))
         .do((response: Response) => MarkdownComponent.cache[uri] = response)
         .map((response: Response) => response.text())
         .subscribe((md: string) => {

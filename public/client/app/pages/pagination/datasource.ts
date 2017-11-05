@@ -1,4 +1,4 @@
-import 'rxjs/add/observable/from';
+import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/delay';
 
 import * as Faker from 'faker';
@@ -65,14 +65,14 @@ export class TestDataSourceService extends PagedDataSourceService {
     page.index = reset? 0 : state.index;
     page.items = filtered.slice(state.index, state.index + state.stride);
     page.maxItems = filtered.length;
-    return Observable.from([page])
+    return Observable.of(page)
       .delay(SIMULATED_SERVER_LATENCY);
   }
 
   /** Save data */
   save(data: PolymerFormValuesMap): Observable<TestDataItem> {
     const saved = Object.assign(new TestDataItem(), data);
-    return Observable.from([saved])
+    return Observable.of(saved)
       .delay(SIMULATED_SERVER_LATENCY)
       .do((item: TestDataItem) => {
         const ix = this.testData.findIndex(orig => orig.id === item.id);
