@@ -13,9 +13,7 @@ const source = path.join(process.cwd(), './');
 const target = path.join(process.cwd(), './dist');
 
 function build() {
-  return merge(
-    compile()
-  );
+  compile();
 }
 
 function clean() {
