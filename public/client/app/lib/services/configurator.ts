@@ -1,5 +1,3 @@
-import 'rxjs/add/operator/startWith';
-
 import { Injectable } from '@angular/core';
 import { NavigatorItem } from '../components/navigator';
 import { Subject } from 'rxjs/Subject';

@@ -1,5 +1,3 @@
-import 'rxjs/add/observable/merge';
-
 import { PagedData, PagedDataItem, PagedDataState } from '../services/paged-datasource';
 
 import { AfterContentInit } from '@angular/core';
@@ -10,7 +8,6 @@ import { ContentChildren } from '@angular/core';
 import { Input } from '@angular/core';
 import { LifecycleComponent } from './lifecycle-component';
 import { LocalStorageService } from 'angular-2-local-storage';
-import { Observable } from 'rxjs/Observable';
 import { OnChanges } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { QueryList } from '@angular/core';
@@ -19,6 +16,7 @@ import { SortableColumnComponent } from '../components/sortable-column';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { config } from '../config';
+import { merge } from 'rxjs/observable/merge';
 import { nextTick } from '../utils';
 
 /**
@@ -122,7 +120,7 @@ export class PagedDataTableComponent extends LifecycleComponent
       acc.push(column.changed);
       return acc;
     }, []);
-    this.sortListeners = Observable.merge(...sorters)
+    this.sortListeners = merge(...sorters)
       .subscribe((column: SortableColumnComponent) => {
         this.sort(column);
       });

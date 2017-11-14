@@ -6,7 +6,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { EffectsModule } from '@ngrx/effects';
 import { FourOhFourPageComponent } from './lib/pages/404-page';
-import { HttpModule } from '@angular/http';
+import { GoogleMapsGuard } from './lib/guards/google-maps';
+import { HighlightJSGuard } from './lib/guards/highlight-js';
+import { HttpClientModule } from '@angular/common/http';
 import { LibModule } from './lib';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { NoopPageComponent } from './pages/noop/page';
@@ -34,7 +36,7 @@ const COMPONENTS = [
 const MODULES_ANGULAR = [
   BrowserAnimationsModule,
   BrowserModule,
-  HttpModule
+  HttpClientModule
 ];
 
 const MODULES_EXTERNAL = [
@@ -56,9 +58,11 @@ const ROUTES: Routes = [
   {path: 'buttons',          loadChildren: './pages/buttons/module#ButtonsPageModule'},
   {path: 'charts',           loadChildren: './pages/charts/module#ChartsPageModule'},
   {path: 'drawers',          loadChildren: './pages/drawers/module#DrawersPageModule'},
-  {path: 'forms',            loadChildren: './pages/forms/module#FormsPageModule'},
+  {path: 'forms',            loadChildren: './pages/forms/module#FormsPageModule',
+                             canActivate: [HighlightJSGuard]},
   {path: 'home',             component: SplashPageComponent},
-  {path: 'maps',             loadChildren: './pages/maps/module#MapsPageModule'},
+  {path: 'maps',             loadChildren: './pages/maps/module#MapsPageModule',
+                             canActivate: [GoogleMapsGuard]},
   {path: 'markdown/:doc',    loadChildren: './pages/markdown/module#MarkdownPageModule'},
   {path: 'noop',             component: NoopPageComponent},
   {path: 'pagination',       loadChildren: './pages/pagination/module#PaginationPageModule'},

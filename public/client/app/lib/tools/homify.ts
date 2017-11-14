@@ -47,7 +47,7 @@ else if (argv.server && fs.existsSync(path.join(base, './dist', 'home.html'))) {
 
 function apply(src: string,
                dest: string) {
-  console.log(chalk.cyan('Homify apply'), `${src} => ${dest}`);
+  console.log(chalk['cyan']('Homify apply'), `${src} => ${dest}`);
   const env = Object.keys(process.env)
     .filter(k => ['PS1', 'PS2'].indexOf(k) === -1)
     .reduce((acc, k) => {
@@ -59,7 +59,7 @@ function apply(src: string,
   const search = '</head>';
   const replace = `<script>ENV = ${JSON.stringify(env)};</script></head>`;
   return write(src, dest, search, replace);
-};
+}
 
 /**
  * Remove any injected ENV from anywhere
@@ -67,11 +67,11 @@ function apply(src: string,
 
 function remove(src: string,
                 dest: string) {
-  console.log(chalk.cyan('Homify remove'), `${src} => ${dest}`);
+  console.log(chalk['cyan']('Homify remove'), `${src} => ${dest}`);
   const search = /<script>ENV.+<\/script>/;
   const replace = '';
   return write(src, dest, search, replace);
-};
+}
 
 function write(src: string,
                dest: string,

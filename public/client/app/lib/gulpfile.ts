@@ -63,7 +63,7 @@ function inline() {
 
 // minify HTML
 function minify(path, ext, file, cb) {
-  console.log('Inlining HTML', chalk.blue(`${path}`));
+  console.log('Inlining HTML', chalk['blue'](`${path}`));
   const output = minifier.minify(file, {
     caseSensitive: true,
     collapseInlineTagWhitespace: true,
@@ -78,10 +78,10 @@ function minify(path, ext, file, cb) {
 
 // convert styles to CSS
 function toCSS(path, ext, file, cb) {
-  console.log('Inlining LESS', chalk.green(`${path}`));
+  console.log('Inlining LESS', chalk['green'](`${path}`));
   less.render(file, {compress: true}, function(e, output) {
     if (e)
-      console.log(chalk.red(e, `${path}`), chalk.yellow(file));
+      console.log(chalk['red'](e, `${path}`), chalk['yellow'](file));
     else cb(null, output.css);
   });
 }

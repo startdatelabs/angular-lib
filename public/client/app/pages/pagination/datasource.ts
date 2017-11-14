@@ -1,13 +1,12 @@
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/delay';
-
 import * as Faker from 'faker';
 
 import { PagedData, PagedDataItem, PagedDataSourceService, PagedDataState } from '../../lib/services/paged-datasource';
+import { delay, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { PolymerFormValuesMap } from '../../lib/components/polymer-form';
+import { of } from 'rxjs/observable/of';
 
 /**
  * Model the test data items
@@ -65,21 +64,23 @@ export class TestDataSourceService extends PagedDataSourceService {
     page.index = reset? 0 : state.index;
     page.items = filtered.slice(state.index, state.index + state.stride);
     page.maxItems = filtered.length;
-    return Observable.of(page)
-      .delay(SIMULATED_SERVER_LATENCY);
+    return of(page).pipe(
+      delay(SIMULATED_SERVER_LATENCY)
+    );
   }
 
   /** Save data */
   save(data: PolymerFormValuesMap): Observable<TestDataItem> {
     const saved = Object.assign(new TestDataItem(), data);
-    return Observable.of(saved)
-      .delay(SIMULATED_SERVER_LATENCY)
-      .do((item: TestDataItem) => {
+    return of(saved).pipe(
+      delay(SIMULATED_SERVER_LATENCY),
+      tap((item: TestDataItem) => {
         const ix = this.testData.findIndex(orig => orig.id === item.id);
         if (ix !== -1)
           this.testData[ix] = item;
         else this.testData.unshift(item);
-      });
+      })
+    );
   }
 
   // private methods

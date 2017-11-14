@@ -1,10 +1,7 @@
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/withLatestFrom';
-
 import * as page from '../actions/page';
 
 import { Actions, Effect } from '@ngrx/effects';
+import { map, tap, withLatestFrom } from 'rxjs/operators';
 
 import { Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
@@ -25,10 +22,11 @@ export class PageEffects {
    */
 
   @Effect() expando: Observable<Action> = this.actions
-    .ofType(page.ActionTypes.TITLE)
-    .withLatestFrom(this.store.select('page'), (action, state) => state)
-    .do((state: PageState) => this.setTitle(state.title))
-    .map((state: PageState) => page.noop());
+    .ofType(page.ActionTypes.TITLE).pipe(
+      withLatestFrom(this.store.select('page'), (action, state) => state),
+      tap((state: PageState) => this.setTitle(state.title)),
+      map((state: PageState) => page.noop())
+    );
 
   // we should strongly-type the Store, but we can't because it belongs
   // to someone else and we're in a common library

@@ -1,6 +1,6 @@
 import * as launchURL from '../actions/launch-url';
 
-import { URLSearchParams } from '@angular/http';
+import { HttpParams } from '@angular/common/http';
 
 export class LaunchURLState {
   location: Location;
@@ -9,7 +9,7 @@ export class LaunchURLState {
 
 export const initialState: LaunchURLState = {
   location: <Location>{},
-  search: new URLSearchParams()
+  search: new HttpParams()
 };
 
 export function reducer(state = initialState,

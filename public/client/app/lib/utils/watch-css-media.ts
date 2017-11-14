@@ -13,12 +13,10 @@
  * ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-import 'rxjs/add/observable/fromEventPattern';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/startWith';
+import { map, startWith } from 'rxjs/operators';
 
-import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { fromEventPattern } from 'rxjs/observable/fromEventPattern';
 
 export class MediaEvent {
   matches: boolean;
@@ -42,19 +40,15 @@ export function WatchCSSMedia () {
         transform = transform || defaultTransform;
 
         const mql = matchMedia(query),
-            event$ = Observable.fromEventPattern(
+            event$ = fromEventPattern(
                 (cb: MediaQueryListListener) => mql.addListener(cb),
                 (cb: MediaQueryListListener) => mql.removeListener(cb)
             );
 
-        const subscription = event$.startWith({
-            matches: mql.matches,
-            media: query,
-            originalEvent: null,
-            event$: event$
-        })
-            .map(event => transform(event, event$))
-            .subscribe(callback);
+        const subscription = event$.pipe(
+          startWith({matches: mql.matches, media: query, originalEvent: null, event$: event$}),
+          map(event => transform(event, event$))
+        ).subscribe(callback);
 
         return subscription;
     }
@@ -169,4 +163,4 @@ export function WatchCSSMedia () {
         }
 
     };
-};
+}

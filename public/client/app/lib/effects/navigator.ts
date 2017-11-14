@@ -1,10 +1,7 @@
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/withLatestFrom';
-
 import * as navigator from '../actions/navigator';
 
 import { Actions, Effect } from '@ngrx/effects';
+import { map, startWith, tap, withLatestFrom } from 'rxjs/operators';
 
 import { Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
@@ -25,36 +22,39 @@ export class NavigatorEffects {
    */
 
   @Effect() expando: Observable<Action> = this.actions
-    .ofType(navigator.ActionTypes.EXPANDO)
-    .withLatestFrom(this.store.select('navigator'), (action, state) => state)
-    .do((state: NavigatorState) => this.lstor.set(navigator.ActionTypes.EXPANDO, state.expando))
-    .map((state: NavigatorState) => navigator.noop());
+    .ofType(navigator.ActionTypes.EXPANDO).pipe(
+       withLatestFrom(this.store.select('navigator'), (action, state) => state),
+       tap((state: NavigatorState) => this.lstor.set(navigator.ActionTypes.EXPANDO, state.expando)),
+       map((state: NavigatorState) => navigator.noop())
+    );
 
   /**
    * Listen for toggle action to record last-used navigator state
    */
 
   @Effect() menu: Observable<Action> = this.actions
-    .ofType(navigator.ActionTypes.MENU)
-    .withLatestFrom(this.store.select('navigator'), (action, state) => state)
-    .do((state: NavigatorState) => {
-      if (state.stickyMenu)
-        this.lstor.set(navigator.ActionTypes.MENU, state.menu);
-    })
-    .map((state: NavigatorState) => navigator.noop());
+    .ofType(navigator.ActionTypes.MENU).pipe(
+      withLatestFrom(this.store.select('navigator'), (action, state) => state),
+      tap((state: NavigatorState) => {
+        if (state.stickyMenu)
+          this.lstor.set(navigator.ActionTypes.MENU, state.menu);
+      }),
+      map((state: NavigatorState) => navigator.noop())
+    );
 
   /**
    * Listen for an init action to load last-used navigator state
    */
 
   @Effect() init: Observable<Action> = this.actions
-    .ofType(navigator.ActionTypes.INIT)
-    .startWith(navigator.init())
-    .map((action: Action) => {
-      const expando = this.lstor.get(navigator.ActionTypes.EXPANDO) || <any>{};
-      const menu = <number>this.lstor.get(navigator.ActionTypes.MENU) || 0;
-      return navigator.load({expando, menu});
-    });
+    .ofType(navigator.ActionTypes.INIT).pipe(
+      startWith(navigator.init()),
+      map((action: Action) => {
+        const expando = this.lstor.get(navigator.ActionTypes.EXPANDO) || <any>{};
+        const menu = <number>this.lstor.get(navigator.ActionTypes.MENU) || 0;
+        return navigator.load({expando, menu});
+      })
+    );
 
   // we should strongly-type the Store, but we can't because it belongs
   // to someone else and we're in a common library

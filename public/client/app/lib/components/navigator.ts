@@ -1,19 +1,17 @@
-import 'rxjs/add/observable/from';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/combineLatest';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/mergeMap';
-
 import * as navigator from '../reducers/navigator';
 import * as page from '../actions/page';
 import * as router from '@ngrx/router-store';
 
 import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
+import { filter, map, mergeMap } from 'rxjs/operators';
 
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { combineLatest } from 'rxjs/operators';
 import { expando } from '../actions/navigator';
+import { from } from 'rxjs/observable/from';
+import { of } from 'rxjs/observable/of';
 
 /**
  * Model navigator
@@ -95,12 +93,12 @@ export class NavigatorComponent {
     this.groups = [];
     this.itemsByGroup = new NavigatorGroupMap();
     this.itemsByPath = new NavigatorPathMap();
-    Observable.from(items || [])
-      .mergeMap(item => Observable.of(item).combineLatest(this.canNavigate(item)))
-      .map((args: any) => [args[0], args.slice(1)])
-      .filter(([item, flags]) => flags.every(can => can))
-      .map(([item, flags]) => <NavigatorItem>item)
-      .subscribe(item => {
+    from(items || []).pipe(
+        mergeMap(item => of(item).pipe(combineLatest(this.canNavigate(item)))),
+        map((args: any) => [args[0], args.slice(1)]),
+        filter(([item, flags]) => flags.every(can => can)),
+        map(([item, flags]) => <NavigatorItem>item)
+      ).subscribe(item => {
         const group = item.options.group || '';
         let items = this.itemsByGroup[group];
         if (!items) {

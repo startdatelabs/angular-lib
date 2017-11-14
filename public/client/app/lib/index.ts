@@ -23,8 +23,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FourOhFourPageComponent } from './pages/404-page';
 import { GoogleMapComponent } from './components/google-map';
 import { GoogleMapInfoWindowComponent } from './components/google-map-infowindow';
+import { GoogleMapsGuard } from './guards/google-maps';
 import { GravatarComponent } from './components/gravatar';
 import { HTMLifyPipe } from './pipes/htmlify';
+import { HighlightJSGuard } from './guards/highlight-js';
 import { JSONifyPipe } from './pipes/jsonify';
 import { LaunchURLEffects } from './effects/launch-url';
 import { LinkifyPipe } from './pipes/linkify';
@@ -111,6 +113,8 @@ const PIPES = [
 const SERVICES = [
   ConfiguratorService,
   EnvService,
+  GoogleMapsGuard,
+  HighlightJSGuard,
   PagedDataSourceService
 ];
 

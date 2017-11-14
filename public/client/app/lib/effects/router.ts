@@ -1,8 +1,5 @@
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/defaultIfEmpty';
-import 'rxjs/add/operator/withLatestFrom';
-
 import { Actions, Effect, toPayload } from '@ngrx/effects';
+import { defaultIfEmpty, map, tap, withLatestFrom } from 'rxjs/operators';
 
 import { Action } from '@ngrx/store';
 import { ConfiguratorService } from '../services/configurator';
@@ -27,26 +24,27 @@ export class RouterEffects {
    */
 
   @Effect({dispatch: false}) listen: Observable<Action> = this.actions
-    .ofType(ROUTER_NAVIGATION)
-    .map(toPayload)
-    .do (payload => {
-      const route = payload.routerState.url;
-      const lastUsedRoute: string = this.lstor.get(LAST_USED_ROUTE);
-      if ((route === '/') && lastUsedRoute)
-        this.router.navigate([lastUsedRoute]);
-    })
-    .withLatestFrom(this.configurator.navigatorItems.defaultIfEmpty([]),
-      (payload, navigatorItems) => [payload, navigatorItems])
-    .do(([payload, navigatorItems]) => {
-      const route = payload.routerState.url;
-      if (route !== '/') {
-        const sticky = navigatorItems.some(item =>
-          item.options.sticky && (route === item.path));
-        if (sticky)
-          this.lstor.set(LAST_USED_ROUTE, route);
-      }
-    })
-    .map(([payload, navigatorItems]) => payload);
+    .ofType(ROUTER_NAVIGATION).pipe(
+      map(toPayload),
+      tap(payload => {
+        const route = payload.routerState.url;
+        const lastUsedRoute: string = this.lstor.get(LAST_USED_ROUTE);
+        if ((route === '/') && lastUsedRoute)
+          this.router.navigate([lastUsedRoute]);
+      }),
+      withLatestFrom(this.configurator.navigatorItems.pipe(defaultIfEmpty([])),
+        (payload, navigatorItems) => [payload, navigatorItems]),
+      tap(([payload, navigatorItems]) => {
+        const route = payload.routerState.url;
+        if (route !== '/') {
+          const sticky = navigatorItems.some(item =>
+            item.options.sticky && (route === item.path));
+          if (sticky)
+            this.lstor.set(LAST_USED_ROUTE, route);
+        }
+      }),
+      map(([payload, navigatorItems]) => payload)
+    );
 
   /** ctor */
   constructor(private actions: Actions,

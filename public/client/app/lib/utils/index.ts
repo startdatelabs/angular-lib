@@ -1,5 +1,4 @@
-import { Response, URLSearchParams } from '@angular/http';
-
+import { HttpParams } from '@angular/common/http';
 import { LibQueryEncoder } from './query-encoder';
 
 /**
@@ -55,16 +54,6 @@ export function encodeRoute(key: string): string {
 }
 
 /**
- * Extract English description of HTTP error from response
- */
-export function handleHttpError(error: Response): string {
-  const dflt = 'Unknown error; server possibly down';
-  const msg = `Status ${error.status}: ${error.statusText || dflt}`;
-  console.log(`%c ${msg}`, 'color: red');
-  return msg;
-}
-
-/**
  * Is this object empty?
  */
 export function isObjectEmpty(obj: any): boolean {
@@ -74,8 +63,8 @@ export function isObjectEmpty(obj: any): boolean {
 /**
  * Make special search params
  */
-export function makeEncodedSearchParams(): URLSearchParams {
-  return new URLSearchParams('', new LibQueryEncoder());
+export function makeEncodedSearchParams(): HttpParams {
+  return new HttpParams({encoder: new LibQueryEncoder()});
 }
 
 /**
@@ -88,8 +77,8 @@ export function nextTick(f: Function): void {
 /**
  * Parse initial search parameters
  */
-export function parseInitialSearchParams(): URLSearchParams {
-  const params = new URLSearchParams();
+export function parseInitialSearchParams(): HttpParams {
+  const params = new HttpParams();
   if (location.search.length > 1) {
     const raw = location.search.substring(1).split('&');
     raw.forEach(param => {

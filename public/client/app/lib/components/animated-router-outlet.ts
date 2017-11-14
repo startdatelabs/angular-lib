@@ -1,7 +1,6 @@
-import 'rxjs/add/operator/do';
-
 import { ChangeDetectionStrategy, Component, HostBinding, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { filter, tap } from 'rxjs/operators';
 
 import { routeAnimation } from '../animations';
 
@@ -31,10 +30,10 @@ export class AnimatedRouterOutletComponent implements OnInit {
   // lifecycle methods
 
   ngOnInit() {
-    this.router.events
-      .filter(event => event instanceof NavigationEnd)
-      .do((event: NavigationEnd) => this.url = event.url)
-      .subscribe();
+    this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd),
+        tap((event: NavigationEnd) => this.url = event.url)
+      ).subscribe();
   }
 
 }

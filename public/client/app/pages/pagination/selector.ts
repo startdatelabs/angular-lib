@@ -6,6 +6,7 @@ import { DrawerPanelComponent } from '../../lib/components/drawer-panel';
 import { LifecycleComponent } from '../../lib/components/lifecycle-component';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
+import { map } from 'rxjs/operators';
 
 /**
  * Model selected columns
@@ -63,9 +64,9 @@ export class TestSelectorComponent extends LifecycleComponent
   // lifecycle methods
 
   ngAfterViewInit() {
-    this.subToForm = this.form.stream
-      .map((data: PolymerForm) => data.values)
-      .subscribe((settings: PolymerFormValuesMap) => {
+    this.subToForm = this.form.stream.pipe(
+        map((data: PolymerForm) => data.values)
+      ).subscribe((settings: PolymerFormValuesMap) => {
         const selected = Object.keys(settings).reduce((acc, setting) => {
           if (settings[setting]) {
             const ix = this.allFields.indexOf(setting);

@@ -1,6 +1,6 @@
-import { } from '@types/marked';
-
 import { Pipe, PipeTransform } from '@angular/core';
+
+declare var marked: any;
 
 /**
  * Pipe wrapper around marked.js
@@ -10,13 +10,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 export class MarkdownPipe implements PipeTransform {
 
-  public static setOptions(options: MarkedOptions): void {
-    marked.setOptions(options);
-  }
-
-  public transform(markdown: string,
-                   options?: MarkedOptions): string {
-    return markdown? marked(markdown, options) : '';
+  public transform(md: string): string {
+    return md? marked(md) : '';
   }
 
 }
