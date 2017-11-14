@@ -5,7 +5,7 @@ import * as inliner from 'gulp-inline-ng2-template';
 import * as less from 'less';
 import * as merge from 'merge-stream';
 import * as minifier from 'html-minifier';
-import * as ngc from 'gulp-ngc';
+import * as ngc from '@angular/compiler-cli/src/main';
 import * as path from 'path';
 
 // globals
@@ -31,7 +31,7 @@ function preProcess() {
 
 // compile TypeScript --> JavaScript
 function compile() {
-  return ngc(['-p', './lib.tsconfig.json']);
+  return ngc.main(['-p', './lib.tsconfig.json']);
 }
 
 // copy root files
