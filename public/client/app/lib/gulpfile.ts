@@ -31,7 +31,7 @@ function preProcess() {
 
 // compile TypeScript --> JavaScript
 function compile() {
-  return ngc('./lib.tsconfig.json');
+  return ngc(['-p', './lib.tsconfig.json']);
 }
 
 // copy root files
