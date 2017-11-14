@@ -78,12 +78,12 @@ export function nextTick(f: Function): void {
  * Parse initial search parameters
  */
 export function parseInitialSearchParams(): HttpParams {
-  const params = new HttpParams();
+  let params = new HttpParams();
   if (location.search.length > 1) {
     const raw = location.search.substring(1).split('&');
     raw.forEach(param => {
       const [k, v] = param.split('=');
-      params.set(k, v);
+      params = params.set(k, v);
     });
   }
   return params;
