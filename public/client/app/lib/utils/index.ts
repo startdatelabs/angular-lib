@@ -1,4 +1,5 @@
 import { HttpParams } from '@angular/common/http';
+import { LibHttpParams } from './http-params';
 import { LibQueryEncoder } from './query-encoder';
 
 /**
@@ -64,7 +65,7 @@ export function isObjectEmpty(obj: any): boolean {
  * Make special search params
  */
 export function makeEncodedSearchParams(): HttpParams {
-  return new HttpParams({encoder: new LibQueryEncoder()});
+  return new LibHttpParams({encoder: new LibQueryEncoder()});
 }
 
 /**

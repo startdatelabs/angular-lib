@@ -30,14 +30,13 @@ export class MapsPageComponent {
     wash: {lat: 43.1831, lng: -72.0893, blurb: 'No ... THIS Washington'},
   };
 
-  infoWindowData = new InfoWindowData();
   markers = [];
 
   private locations = {};
 
   /** Marker clicked */
   markerClicked(infoWindowData: any) {
-    this.infoWindowData = infoWindowData;
+    this.infoWindow.element.nativeElement.innerText = infoWindowData.blurb;
   }
 
   /** Plot a new location */
