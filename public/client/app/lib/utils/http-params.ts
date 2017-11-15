@@ -1,4 +1,5 @@
 import { HttpParams } from '@angular/common/http';
+import { LibQueryEncoder } from './query-encoder';
 
 /**
  * Super duper HttpParams
@@ -21,7 +22,12 @@ export class LibHttpParams extends HttpParams {
   /** Override set */
   set(param: string,
       value: string): HttpParams {
-    return LibHttpParams.isEmpty(value)? this : super.set(param, value);
+    if (LibHttpParams.isEmpty(value))
+      return this;
+    else {
+      const params = super.set(param, value);
+      return new LibHttpParams({encoder: new LibQueryEncoder(), fromString: params.toString()});
+    }
   }
 
 }
