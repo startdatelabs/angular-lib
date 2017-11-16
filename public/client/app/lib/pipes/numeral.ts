@@ -12,8 +12,11 @@ declare var numeral: any;
 export class NumeralPipe implements PipeTransform {
 
   transform(value: any,
-            fmt: string): string {
-    return numeral(Number(value)).format(fmt);
+            fmt: string,
+            dflt = ''): string {
+    if (value == null)
+      return dflt;
+    else return numeral(Number(value)).format(fmt);
   }
 
 }

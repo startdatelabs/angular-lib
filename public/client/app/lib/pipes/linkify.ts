@@ -11,7 +11,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 export class LinkifyPipe implements PipeTransform {
 
-  transform(s: string): string {
+  transform(s: string,
+            dflt = ''): string {
+
+    // quick exit if empty string
+    if (s == null)
+      return dflt;
 
     // URLs starting with http://, https://, or ftp://
     const p1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
@@ -21,11 +26,11 @@ export class LinkifyPipe implements PipeTransform {
     const p2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
     s = s.replace(p2, '$1<a href="http://$2" target="_blank">$2</a>');
 
-   // change email addresses to mailto: links
-   const p3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
-   s = s.replace(p3, '<a href="mailto:$1">$1</a>');
+    // change email addresses to mailto: links
+    const p3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+    s = s.replace(p3, '<a href="mailto:$1">$1</a>');
 
-   return s;
+    return s;
 
   }
 

@@ -10,8 +10,9 @@ declare var marked: any;
 
 export class MarkdownPipe implements PipeTransform {
 
-  public transform(md: string): string {
-    return md? marked(md) : '';
+  transform(md: string,
+            dflt = ''): string {
+    return md? marked(md) : dflt;
   }
 
 }

@@ -15,9 +15,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 export class JSONifyPipe implements PipeTransform {
 
-  transform(s: string): string {
-    if (s == null) 
-      return '';
+  transform(s: string,
+            dflt = ''): string {
+    if (s == null)
+      return dflt;
     else if (Array.isArray(s) || (typeof s === 'object'))
       return `${JSON.stringify(s, null, ' ').replace(new RegExp('"', 'g'), '')}`;
     else return s;

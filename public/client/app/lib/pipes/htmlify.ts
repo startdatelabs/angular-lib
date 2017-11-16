@@ -11,8 +11,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 export class HTMLifyPipe implements PipeTransform {
 
-  transform(s: string): string {
-   return s.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+  transform(s: string,
+            dflt = ''): string {
+   if (s == null)
+     return dflt;
+   else return s.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
   }
 
 }
