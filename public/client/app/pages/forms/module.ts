@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, ModuleWithProviders, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { FormsPageComponent } from './page';
@@ -18,7 +18,7 @@ const COMPONENTS = [
 ];
 
 const MODULES = [
-  LibModule,
+  LibModule.forRoot(),
   PolymerModule
 ];
 
@@ -41,11 +41,4 @@ const ROUTES: Routes = [
 
 })
 
-export class FormsPageModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: FormsPageModule,
-      providers: [ ]
-    };
-  }
-}
+export class FormsPageModule { }

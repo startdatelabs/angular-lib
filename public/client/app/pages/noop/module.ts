@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, ModuleWithProviders, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -16,7 +16,7 @@ const COMPONENTS = [
 const MODULES = [
   CommonModule,
   FlexLayoutModule,
-  LibModule
+  LibModule.forRoot()
 ];
 
 @NgModule({
@@ -33,11 +33,4 @@ const MODULES = [
 
 })
 
-export class NoopPageModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: NoopPageModule,
-      providers: [ ]
-    };
-  }
-}
+export class NoopPageModule { }

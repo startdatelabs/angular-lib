@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, ModuleWithProviders, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ButtonsPageComponent } from './page';
@@ -13,7 +13,7 @@ const COMPONENTS = [
 ];
 
 const MODULES = [
-  LibModule
+  LibModule.forRoot()
 ];
 
 const ROUTES: Routes = [
@@ -35,11 +35,4 @@ const ROUTES: Routes = [
 
 })
 
-export class ButtonsPageModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: ButtonsPageModule,
-      providers: [ ]
-    };
-  }
-}
+export class ButtonsPageModule { }

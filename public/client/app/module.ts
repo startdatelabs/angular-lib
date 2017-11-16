@@ -48,7 +48,7 @@ const MODULES_EXTERNAL = [
 ];
 
 const MODULES_INTERNAL = [
-  LibModule,
+  LibModule.forRoot(),
   NoopPageModule,
   SplashPageModule
 ];

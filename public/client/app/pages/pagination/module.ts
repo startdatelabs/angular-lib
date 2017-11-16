@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, ModuleWithProviders, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LibModule } from '../../lib';
@@ -24,7 +24,7 @@ const COMPONENTS = [
 ];
 
 const MODULES = [
-  LibModule
+  LibModule.forRoot()
 ];
 
 const ROUTES: Routes = [
@@ -54,11 +54,4 @@ const SERVICES = [
 
 })
 
-export class PaginationPageModule {
-  static forRoot(): ModuleWithProviders {
-    return {
-      ngModule: PaginationPageModule,
-      providers: [ ]
-    };
-  }
-}
+export class PaginationPageModule { }

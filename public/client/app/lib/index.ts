@@ -150,10 +150,6 @@ const SERVICES = [
     RouterModule
   ],
 
-  providers: [
-    ...SERVICES
-  ],
-
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
 })
