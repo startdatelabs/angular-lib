@@ -9,6 +9,7 @@ import { PolymerControlDirective, PolymerFormComponent } from './components/poly
 import { AnimatedRouterOutletComponent } from './components/animated-router-outlet';
 import { BreakablePipe } from './pipes/breakable';
 import { CircledNumberComponent } from './components/circled-number';
+import { CodeMirrorGuard } from './guards/codemirror';
 import { CodeViewerComponent } from './components/code-viewer';
 import { CommonModule } from '@angular/common';
 import { ConfiguratorService } from './services/configurator';
@@ -111,6 +112,7 @@ const PIPES = [
 ];
 
 const SERVICES = [
+  CodeMirrorGuard,
   ConfiguratorService,
   EnvService,
   GoogleMapsGuard,
