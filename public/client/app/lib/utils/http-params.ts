@@ -11,7 +11,7 @@ export class LibHttpParams extends HttpParams {
   private static isEmpty(value: any) {
     // see https://stackoverflow.com/questions/2647867/
     // how-to-determine-if-variable-is-undefined-or-null
-    return (value == null) || (value === '');
+    return (value == null) || (value === '') || (value === 'null') || (value === 'undefined');
   }
 
   /** ctor */
