@@ -1,5 +1,5 @@
 import { CanActivate, CanActivateChild } from '@angular/router';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, flatMap, map } from 'rxjs/operators';
 
 import { AsyncLoader } from '../utils/async-loader';
 import { Injectable } from '@angular/core';
@@ -26,17 +26,15 @@ export class CodeMirrorGuard implements CanActivate, CanActivateChild {
 
   private _canActivate(): Observable<boolean> {
     const base = '//cdnjs.cloudflare.com/ajax/libs/codemirror/5.31.0';
-    const loader = Promise.all([
-      AsyncLoader.css(`${base}/codemirror.min.css`),
-      AsyncLoader.css(`${base}/addon/lint/lint.min.css`),
-      AsyncLoader.css(`${base}/theme/midnight.min.css`),
-      AsyncLoader.js(`${base}/codemirror.min.js`),
-      AsyncLoader.js(`${base}/mode/javascript/javascript.min.js`),
-      AsyncLoader.js(`//cdnjs.cloudflare.com/ajax/libs/jsonlint/1.6.0/jsonlint.min.js`),
-      AsyncLoader.js(`${base}/addon/lint/lint.min.js`),
-      AsyncLoader.js(`${base}/addon/lint/json-lint.min.js`),
-    ]);
-    return from(loader).pipe(
+    const base2 = '//cdnjs.cloudflare.com/ajax/libs/jsonlint/1.6.0';
+    return from(AsyncLoader.css(`${base}/codemirror.min.css`)).pipe(
+      flatMap(() => from(AsyncLoader.css(`${base}/addon/lint/lint.min.css`))),
+      flatMap(() => from(AsyncLoader.css(`${base}/theme/midnight.min.css`))),
+      flatMap(() => from(AsyncLoader.js(`${base}/codemirror.min.js`))),
+      flatMap(() => from(AsyncLoader.js(`${base}/mode/javascript/javascript.min.js`))),
+      flatMap(() => from(AsyncLoader.js(`${base2}/jsonlint.min.js`))),
+      flatMap(() => from(AsyncLoader.js(`${base}/addon/lint/lint.min.js`))),
+      flatMap(() => from(AsyncLoader.js(`${base}/addon/lint/json-lint.min.js`))),
       catchError((x: any) => of(false)),
       map((x: any) => true)
     );

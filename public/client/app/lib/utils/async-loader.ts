@@ -1,4 +1,3 @@
-
 /**
  * Async loader for scripts, styles
  *

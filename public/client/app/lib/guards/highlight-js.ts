@@ -1,5 +1,5 @@
 import { CanActivate, CanActivateChild } from '@angular/router';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, flatMap, map } from 'rxjs/operators';
 
 import { AsyncLoader } from '../utils/async-loader';
 import { Injectable } from '@angular/core';
@@ -26,11 +26,8 @@ export class HighlightJSGuard implements CanActivate, CanActivateChild {
 
   private _canActivate(): Observable<boolean> {
     const base = '//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0';
-    const loader = Promise.all([
-      AsyncLoader.css(`${base}/styles/default.min.css`),
-      AsyncLoader.js(`${base}/highlight.min.js`)
-    ]);
-    return from(loader).pipe(
+    return from(AsyncLoader.css(`${base}/styles/default.min.css`)).pipe(
+      flatMap(() => from(AsyncLoader.js(`${base}/highlight.min.js`))),
       catchError((x: any) => of(false)),
       map((x: any) => true)
     );
