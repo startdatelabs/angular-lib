@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
 
 import { AutoUnsubscribe } from '../decorators/auto-unsubscribe';
+import { HighlightJsService } from 'angular2-highlight-js';
 import { HttpClient } from '@angular/common/http';
 import { LifecycleComponent } from './lifecycle-component';
 import { Subscription } from 'rxjs/Subscription';
@@ -28,7 +29,8 @@ export class MarkdownComponent extends LifecycleComponent {
   private subToLoader: Subscription;
 
   /** ctor */
-  constructor(private http: HttpClient) {
+  constructor(private hljs: HighlightJsService,
+              private http: HttpClient) {
     super();
   }
 
@@ -43,7 +45,11 @@ export class MarkdownComponent extends LifecycleComponent {
           catchError(error => of(errmsg))
         ).subscribe((md: string) => {
           MarkdownComponent.cache[uri] = md;
-          this.markdown.nativeElement.innerHTML = md? marked(md) : '';
+          const el = this.markdown.nativeElement;
+          el.innerHTML = md? marked(md) : '';
+          el.querySelectorAll('pre > code').forEach(code => {
+            this.hljs.highlight(code.parentNode);
+          });
         });
     }
   }
