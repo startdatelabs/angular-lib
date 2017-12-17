@@ -26,15 +26,6 @@ export class GoogleMapMarker {
 
 /**
  * Google map
- *
- * NOTE: client code responsible for loading API in index.html
-
-    <script>
-      var e = document.createElement("script");
-      e.src = "https://maps.googleapis.com/maps/api/js?key=" + ENV["GOOGLE_MAPS_API_KEY"];
-      document.body.appendChild(e);
-    </script>
-
  */
 
 @Component({
@@ -47,7 +38,7 @@ export class GoogleMapMarker {
 export class GoogleMapComponent extends LifecycleComponent
                                 implements AfterViewInit {
 
-  @Input() center: {
+  @Input() center = {
     lat: 39.8282,
     lng: -98.5795
   };

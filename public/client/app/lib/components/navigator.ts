@@ -39,8 +39,8 @@ export class NavigatorItemNodeFinder {
 
 export class NavigatorItemOptions {
   // TODO: why doesn't this work?
-  // trips: Property 'canNavigate' is missing in type 'typeof RandomNavigatorGuard'
   // canNavigate?: CanNavigate[];
+  // trips: Property 'canNavigate' is missing in type 'typeof RandomNavigatorGuard'
   // well -- I'm not going to worry about it because the Angular team has to
   // do exactly the same in interface Route -- see:
   // https://github.com/angular/angular/blob/master/packages/router/src/config.ts
@@ -94,21 +94,21 @@ export class NavigatorComponent {
     this.itemsByGroup = new NavigatorGroupMap();
     this.itemsByPath = new NavigatorPathMap();
     from(items || []).pipe(
-        mergeMap(item => of(item).pipe(combineLatest(this.canNavigate(item)))),
-        map((args: any) => [args[0], args.slice(1)]),
-        filter(([item, flags]) => flags.every(can => can)),
-        map(([item, flags]) => <NavigatorItem>item)
-      ).subscribe(item => {
-        const group = item.options.group || '';
-        let items = this.itemsByGroup[group];
-        if (!items) {
-          items = [];
-          this.itemsByGroup[group] = items;
-          this.groups.push(group);
-        }
-        items.push(item);
-        this.itemsByPath[item.path] = item;
-      });
+      mergeMap(item => of(item).pipe(combineLatest(this.canNavigate(item)))),
+      map((args: any) => [args[0], args.slice(1)]),
+      filter(([item, flags]) => flags.every(can => can)),
+      map(([item, flags]) => <NavigatorItem>item)
+    ).subscribe(item => {
+      const group = item.options.group || '';
+      let items = this.itemsByGroup[group];
+      if (!items) {
+        items = [];
+        this.itemsByGroup[group] = items;
+        this.groups.push(group);
+      }
+      items.push(item);
+      this.itemsByPath[item.path] = item;
+    });
   }
 
   // private methods
