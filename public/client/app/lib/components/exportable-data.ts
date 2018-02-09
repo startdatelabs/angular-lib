@@ -103,7 +103,12 @@ export class ExportableDataComponent extends LifecycleComponent {
           // inject detail
           page.items.forEach(item => {
             const detail = this.fields.reduce((acc, field) => {
-              acc.push(item[field]);
+              // NOTE: allow complex expressions but only then do it the hard way
+              if (field.includes('.') || field.includes('[')) {
+                /* tslint:disable:no-eval*/
+                acc.push(eval(`item.${field}`));
+              }
+              else acc.push(item[field]);
               return acc;
             }, []);
             this.results.push(detail);
