@@ -51,7 +51,7 @@ const NAVIGATOR_ITEMS: NavigatorItem[] = [
     sticky: true
   }),
 
-  new NavigatorItem('/markdown/readthat.md', 'file-text', 'Markdown Test #1', {
+  new NavigatorItem('/markdown/readthat.md', 'file-alt', 'Markdown Test #1', {
     group: 'Components',
     tooltip: 'A basic introduction to part 1 for beginners',
     sticky: true,
@@ -62,7 +62,7 @@ const NAVIGATOR_ITEMS: NavigatorItem[] = [
     ]
   }),
 
-  new NavigatorItem('/markdown/readthis.md', 'file-text', 'Markdown Test #2', {
+  new NavigatorItem('/markdown/readthis.md', 'file-alt', 'Markdown Test #2', {
     group: 'Components',
     tooltip: 'Full API spec for advanced programmers',
     sticky: true,
@@ -89,7 +89,7 @@ const NAVIGATOR_ITEMS: NavigatorItem[] = [
     sticky: true
   }),
 
-  new NavigatorItem('/charts', 'area-chart', 'Google Charts', {
+  new NavigatorItem('/charts', 'chart-area', 'Google Charts', {
     group: 'Google Integrations',
     tooltip: 'Sample Google chart',
     sticky: true
@@ -97,7 +97,7 @@ const NAVIGATOR_ITEMS: NavigatorItem[] = [
 
   // pagination
 
-  new NavigatorItem('/pagination', 'sort-amount-asc', 'All-in-one Test', {
+  new NavigatorItem('/pagination', 'sort-alpha-up', 'All-in-one Test', {
     group: 'Pagination & Sort',
     tooltip: 'Test page for all aspects of pagination',
     sticky: true

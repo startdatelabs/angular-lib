@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { EffectsModule } from '@ngrx/effects';
+import { FontAwesomeCSSGuard } from './lib/guards/fontawesome-css';
 import { FourOhFourPageComponent } from './lib/pages/404-page';
 import { GoogleMapsGuard } from './lib/guards/google-maps';
 import { HighlightJSGuard } from './lib/guards/highlight-js';
@@ -54,22 +55,24 @@ const MODULES_INTERNAL = [
 ];
 
 const ROUTES: Routes = [
-  {path: '',                 component: SplashPageComponent},
-  {path: 'buttons',          loadChildren: './pages/buttons/module#ButtonsPageModule'},
-  {path: 'charts',           loadChildren: './pages/charts/module#ChartsPageModule'},
-  {path: 'drawers',          loadChildren: './pages/drawers/module#DrawersPageModule'},
-  {path: 'forms',            loadChildren: './pages/forms/module#FormsPageModule',
-                             canActivate: [HighlightJSGuard]},
-  {path: 'home',             component: SplashPageComponent},
-  {path: 'maps',             loadChildren: './pages/maps/module#MapsPageModule',
-                             canActivate: [GoogleMapsGuard]},
-  {path: 'markdown/:doc',    loadChildren: './pages/markdown/module#MarkdownPageModule',
-                             canActivate: [HighlightJSGuard]},
-  {path: 'noop',             component: NoopPageComponent},
-  {path: 'pagination',       loadChildren: './pages/pagination/module#PaginationPageModule'},
-  {path: 'pipes',            loadChildren: './pages/pipes/module#PipesPageModule'},
-  {path: 'user',             loadChildren: './pages/user/module#UserPageModule'},
-  {path: '**',               component: FourOhFourPageComponent}
+  {path: '', canActivateChild: [FontAwesomeCSSGuard], children: [
+    {path: '',                 component: SplashPageComponent},
+    {path: 'buttons',          loadChildren: './pages/buttons/module#ButtonsPageModule'},
+    {path: 'charts',           loadChildren: './pages/charts/module#ChartsPageModule'},
+    {path: 'drawers',          loadChildren: './pages/drawers/module#DrawersPageModule'},
+    {path: 'forms',            loadChildren: './pages/forms/module#FormsPageModule',
+                               canActivate: [HighlightJSGuard]},
+    {path: 'home',             component: SplashPageComponent},
+    {path: 'maps',             loadChildren: './pages/maps/module#MapsPageModule',
+                               canActivate: [GoogleMapsGuard]},
+    {path: 'markdown/:doc',    loadChildren: './pages/markdown/module#MarkdownPageModule',
+                               canActivate: [HighlightJSGuard]},
+    {path: 'noop',             component: NoopPageComponent},
+    {path: 'pagination',       loadChildren: './pages/pagination/module#PaginationPageModule'},
+    {path: 'pipes',            loadChildren: './pages/pipes/module#PipesPageModule'},
+    {path: 'user',             loadChildren: './pages/user/module#UserPageModule'},
+    {path: '**',               component: FourOhFourPageComponent}
+  ]}
 ];
 
 const SERVICES = [

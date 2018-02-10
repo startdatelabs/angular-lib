@@ -21,6 +21,8 @@ import { EnvService } from './services/env';
 import { ExportToCSVComponent } from './components/export-to-csv';
 import { ExportableDataComponent } from './components/exportable-data';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FontAwesomeCSSGuard } from './guards/fontawesome-css';
+import { FontAwesomeJSGuard } from './guards/fontawesome-js';
 import { FourOhFourPageComponent } from './pages/404-page';
 import { GoogleMapComponent } from './components/google-map';
 import { GoogleMapInfoWindowComponent } from './components/google-map-infowindow';
@@ -115,6 +117,8 @@ const SERVICES = [
   CodeMirrorGuard,
   ConfiguratorService,
   EnvService,
+  FontAwesomeCSSGuard,
+  FontAwesomeJSGuard,
   GoogleMapsGuard,
   HighlightJSGuard,
   PagedDataSourceService
