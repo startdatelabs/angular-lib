@@ -37,7 +37,6 @@
     "core-js": "^2.4.1",
     "del": "^3",
     "faker": "^4.1.0",
-    "font-awesome": "^4.7.0",
     "gulp": "^3.9.1",
     "gulp-clean-css": "^3.0.4",
     "gulp-debug": "^3.1.0",
