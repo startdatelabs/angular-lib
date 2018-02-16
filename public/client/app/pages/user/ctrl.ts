@@ -21,7 +21,7 @@ export class UserCtrlComponent {
   // property accessors / mutators
 
   @Input() set userState(userState: PolymerForm) {
-    if (userState && userState.submitted)
+    if (userState.submitted)
       nextTick(() => this.store.dispatch(newUser(userState.values)));
   }
 

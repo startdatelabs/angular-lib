@@ -2,9 +2,9 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@a
 import { PolymerForm, PolymerFormComponent, PolymerFormValuesMap } from '../../lib/components/polymer-form';
 
 import { AutoUnsubscribe } from '../../lib/decorators/auto-unsubscribe';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DrawerPanelComponent } from '../../lib/components/drawer-panel';
 import { LifecycleComponent } from '../../lib/components/lifecycle-component';
-import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { map } from 'rxjs/operators';
 
@@ -57,7 +57,7 @@ export class TestSelectorComponent extends LifecycleComponent
     'Balance'
   ];
 
-  columns = new Subject<SelectedColumn[]>();
+  columns = new BehaviorSubject([]);
 
   private subToForm: Subscription;
 

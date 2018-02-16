@@ -49,7 +49,7 @@ export class TestCtrlComponent extends LifecycleComponent {
   @OnChange('filter', 'state') load(changedFilter: boolean,
                                     changedState: boolean) {
     const reset = changedFilter;
-    if (this.filter && this.filter.submitted && this.state) {
+    if (this.filter.submitted && this.state) {
       nextTick(() => this.store.dispatch(statusText('Loading test data ... please standby')));
       this.loading.emit(true);
       // cancel any prior request
@@ -67,7 +67,7 @@ export class TestCtrlComponent extends LifecycleComponent {
   }
 
   @OnChange('update') save() {
-    if (this.update && this.update.submitted) {
+    if (this.update.submitted) {
       nextTick(() => this.store.dispatch(statusText(`Saving item ${this.update.values.id} ... please standby`)));
       this.saving.emit(true);
       // cancel any prior request

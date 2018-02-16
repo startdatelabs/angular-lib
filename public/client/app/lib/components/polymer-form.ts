@@ -1,5 +1,6 @@
 import { AfterContentInit } from '@angular/core';
 import { AutoUnsubscribe } from '../decorators/auto-unsubscribe';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { Component } from '@angular/core';
 import { ContentChildren } from '@angular/core';
@@ -13,7 +14,6 @@ import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { nextTick } from '../utils';
 
@@ -305,7 +305,7 @@ export class PolymerFormComponent extends LifecycleComponent
   @Input() preSubmit: boolean;
   @Input() stickyKey: string;
 
-  stream = new Subject<PolymerForm>();
+  stream = new BehaviorSubject(new PolymerForm());
 
   private changes: Subscription;
   private controlByName = {};

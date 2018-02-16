@@ -23,7 +23,7 @@ export class TestPipesComponent {
   valid: boolean;
 
   @Input() set filter(filter: PolymerForm) {
-    if (filter && filter.submitted) {
+    if (filter.submitted) {
       this.date = Date.parse(<string>filter.values.date);
       this.number = <number>filter.values.number;
       this.valid = true;
