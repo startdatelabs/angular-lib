@@ -567,6 +567,30 @@
       --paper-slider-pin-color: var(--accent-color);
     }
 
+    paper-slider[info] {
+      --paper-slider-active-color: var(--info-color);
+      --paper-slider-knob-color: var(--info-color);
+      --paper-slider-pin-color: var(--info-color);
+    }
+
+    paper-slider[success] {
+      --paper-slider-active-color: var(--success-color);
+      --paper-slider-knob-color: var(--success-color);
+      --paper-slider-pin-color: var(--success-color);
+    }
+
+    paper-slider[warning] {
+      --paper-slider-active-color: var(--warning-color);
+      --paper-slider-knob-color: var(--warning-color);
+      --paper-slider-pin-color: var(--warning-color);
+    }
+
+    paper-slider[error] {
+      --paper-slider-active-color: var(--error-color);
+      --paper-slider-knob-color: var(--error-color);
+      --paper-slider-pin-color: var(--error-color);
+    }
+
     paper-tab {
       --paper-tab-ink: var(--primary-color);
     }
@@ -629,6 +653,18 @@
     table[standard] thead th[divider] {
       border-left: 2px solid var(--paper-grey-400);
       width: 0;
+    }
+
+    table[standard] tbody td[info] {
+      color: var(--info-color);
+    }
+
+    table[standard] tbody td[success] {
+      color: var(--success-color);
+    }
+
+    table[standard] tbody td[warning] {
+      color: var(--warning-color);
     }
 
     table[standard] tbody td[error] {
