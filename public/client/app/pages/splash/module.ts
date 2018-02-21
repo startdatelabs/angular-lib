@@ -16,7 +16,7 @@ const COMPONENTS = [
 const MODULES = [
   CommonModule,
   FlexLayoutModule,
-  LibModule
+  LibModule.forRoot()
 ];
 
 @NgModule({

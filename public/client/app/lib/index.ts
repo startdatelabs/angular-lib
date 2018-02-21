@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ModuleWithProviders, NgModule } from '@angular/core';
 import { DateFormatPipe, DurationPipe, FromUnixTimePipe, TimeAgoPipe, UTCFormatPipe } from './pipes/moment';
 import { DaysOfWeekComboDirective, DaysOfWeekMultiDirective } from './directives/days-of-week';
 import { MultiSelectorComponent, MultiSelectorControlDirective } from './components/multi-selector';
@@ -156,12 +156,17 @@ const SERVICES = [
     RouterModule
   ],
 
-  providers: [
-    ...SERVICES
-  ],
-
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
 })
 
-export class LibModule { }
+export class LibModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: LibModule,
+      providers: [
+        ...SERVICES
+      ]
+    };
+  }
+}
