@@ -1,14 +1,13 @@
-import {} from '@types/googlemaps';
-
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, Output } from '@angular/core';
 
 import { GoogleMapInfoWindowComponent } from './google-map-infowindow';
 import { LifecycleComponent } from './lifecycle-component';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { OnChange } from '../decorators/onchange';
+import { google } from 'google-maps';
 import { nextTick } from '../utils';
 
-declare var google: any;
+declare var google: google;
 
 /**
  * Model map marker
