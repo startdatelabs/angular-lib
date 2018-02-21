@@ -18,7 +18,7 @@ const COMPONENTS = [
 ];
 
 const MODULES = [
-  LibModule.forRoot(),
+  LibModule,
   PolymerModule
 ];
 

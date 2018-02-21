@@ -13,7 +13,7 @@ const COMPONENTS = [
 ];
 
 const MODULES = [
-  LibModule.forRoot()
+  LibModule
 ];
 
 const ROUTES: Routes = [
