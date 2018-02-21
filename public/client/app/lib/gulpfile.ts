@@ -63,6 +63,8 @@ function minify(path, ext, file, cb) {
 function purge() {
   return del([
     path.join(target, '**/*.ts'),
+    '!' + path.join(target, '**/gulpfile.ts'),
+    '!' + path.join(target, '**/tools/*.ts'),
     '!' + path.join(target, '**/*.d.ts')
   ], {force: true});
 }
