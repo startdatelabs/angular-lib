@@ -12,24 +12,10 @@ import * as path from 'path';
 const source = path.join(process.cwd(), './');
 const target = path.join(process.cwd(), './dist');
 
-function build() {
-  compile();
-}
-
 function clean() {
-  return del([path.join(target, '**/*')], {force: true});
-}
-
-function preProcess() {
-  return merge(
-    copyRoot(),
-    inline()
-  );
-}
-
-// compile TypeScript --> JavaScript
-function compile() {
-  return ngc.main(['-p', './lib.tsconfig.json']);
+  return del([
+    path.join(target, '**/*')
+  ], {force: true});
 }
 
 // copy root files
@@ -74,6 +60,13 @@ function minify(path, ext, file, cb) {
   cb(null, output);
 }
 
+function purge() {
+  return del([
+    path.join(target, '**/*.ts'),
+    '!' + path.join(target, '**/*.d.ts')
+  ], {force: true});
+}
+
 // convert styles to CSS
 function toCSS(path, ext, file, cb) {
   console.log('Inlining LESS', chalk['green'](`${path}`));
@@ -91,11 +84,18 @@ gulp.task('clean', function() {
 });
 
 gulp.task('pre-process', ['clean'], function() {
-  return preProcess();
+  return merge(
+    copyRoot(),
+    inline()
+  );
 });
 
 gulp.task('build', ['pre-process'], function() {
-  return build();
+  return ngc.main(['-p', './lib.tsconfig.json']);
 });
 
-gulp.task('default', ['build']);
+gulp.task('post-process', ['build'], function() {
+  return purge();
+});
+
+gulp.task('default', ['post-process']);
