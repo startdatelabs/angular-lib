@@ -8,6 +8,8 @@ import { LocalStorageService } from 'angular-2-local-storage';
 import { OnChange } from '../decorators/onchange';
 import { nextTick } from '../utils';
 
+declare var google: any;
+
 /**
  * Model map marker
  */
