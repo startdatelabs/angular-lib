@@ -1,4 +1,4 @@
-import { Actions, Effect, toPayload } from '@ngrx/effects';
+import { Actions, Effect } from '@ngrx/effects';
 import { defaultIfEmpty, map, tap, withLatestFrom } from 'rxjs/operators';
 
 import { Action } from '@ngrx/store';
@@ -25,7 +25,7 @@ export class RouterEffects {
 
   @Effect({dispatch: false}) listen: Observable<Action> = this.actions
     .ofType(ROUTER_NAVIGATION).pipe(
-      map(toPayload),
+      map((action: any) => action.payload),
       tap(payload => {
         const route = payload.routerState.url;
         const lastUsedRoute: string = this.lstor.get(LAST_USED_ROUTE);

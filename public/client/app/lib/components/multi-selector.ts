@@ -82,7 +82,9 @@ export class MultiSelectorComponent implements OnChanges, OnInit {
   /** Item value changes */
   check(event: any,
         item: MultiSelectorItem) {
-    const values = this.input.value? this.input.value.split(this.separator) : [];
+    let values: any = this.input.value? this.input.value.split(this.separator) : [];
+    if (typeof item.value === 'number')
+      values = values.map(value => Number(value));
     // remove any old value
     const ix = values.indexOf(item.value);
     if (ix !== -1)
