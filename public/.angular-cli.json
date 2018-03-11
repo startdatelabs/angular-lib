@@ -27,6 +27,10 @@
         "../node_modules/marked/marked.min.js",
         "../node_modules/numeral/min/numeral.min.js"
       ],
+      "styles": [
+        "theme.css",
+        "app/lib/theme.css"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

@@ -23,7 +23,7 @@ function copyRoot() {
   const globs = [
     path.join(source, 'package.json'),
     path.join(source, 'startup.html'),
-    path.join(source, 'theme.html')
+    path.join(source, 'theme.css')
   ];
   return gulp.src(globs)
     .pipe(gulp.dest(target));
