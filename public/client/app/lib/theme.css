@@ -27,6 +27,23 @@
 
 :root {
 
+/*
+  NOTE: must be set before including this file eg:
+
+  --primary-color: var(--paper-blue-500);
+  --light-primary-color: var(--paper-blue-100);
+  --dark-primary-color: var(--paper-blue-700);
+
+  --accent-color: var(--paper-pink-a200);
+  --light-accent-color: var(--paper-pink-a100);
+  --dark-accent-color: var(--paper-pink-a400);
+
+  --navigator-background-color: #1c2f38;
+  --navigator-hilite-background-color: #12232b;
+  --navigator-hilite-text-color: #eef6f6;
+  --navigator-text-color: #8db3c7;
+ */
+
   --primary-text-color: var(--paper-grey-900);
   --primary-background-color: white;
   --secondary-text-color: var(--paper-grey-600);

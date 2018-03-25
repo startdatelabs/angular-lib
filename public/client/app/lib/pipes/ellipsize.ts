@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-
 /**
  * Truncates a long string after N characters, then appends an ellipsis.
  * By default, N is 100.
