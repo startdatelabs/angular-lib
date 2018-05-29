@@ -14,8 +14,6 @@ import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core'
  *
  */
 
-declare var Polymer: any;
-
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-polymer-app',
@@ -29,7 +27,6 @@ export class PolymerAppComponent {
 
   // https://github.com/webcomponents/webcomponentsjs#webcomponentsloaded
   @HostListener('window:WebComponentsReady') onWebComponentsReady() {
-    Polymer.updateStyles();
     this.loaded = true;
     this.loading = false;
     // successful startup signature

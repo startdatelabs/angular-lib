@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { PagedData, PagedDataState } from '../../lib/services/paged-datasource';
+import { Subject, Subscription } from 'rxjs';
 import { TestDataItem, TestDataSourceService } from './datasource';
 import { numResults, statusText } from '../../lib/actions/page';
 
@@ -9,8 +10,6 @@ import { LifecycleComponent } from '../../lib/components/lifecycle-component';
 import { OnChange } from '../../lib/decorators/onchange';
 import { PolymerForm } from '../../lib/components/polymer-form';
 import { Store } from '@ngrx/store';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
 import { nextTick } from '../../lib/utils';
 
 /**
@@ -34,9 +33,8 @@ export class TestCtrlComponent extends LifecycleComponent {
   @Output() saving = new EventEmitter<boolean>();
 
   page = new Subject<PagedData>();
-
-  private subToLoader: Subscription;
-  private subToSaver: Subscription;
+  subToLoader: Subscription;
+  subToSaver: Subscription;
 
   /** ctor */
   constructor(private store: Store<AppState>,

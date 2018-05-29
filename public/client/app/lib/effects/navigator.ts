@@ -7,7 +7,7 @@ import { Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { NavigatorState } from '../reducers/navigator';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 /**

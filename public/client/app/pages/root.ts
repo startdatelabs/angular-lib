@@ -12,7 +12,7 @@ import { AutoUnsubscribe } from '../lib/decorators/auto-unsubscribe';
 import { EnvService } from '../lib/services/env';
 import { LifecycleComponent } from '../lib/components/lifecycle-component';
 import { NavigatorItem } from '../lib/components/navigator';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { RandomNavigatorGuard } from '../guards/random-navigator';
 import { Store } from '@ngrx/store';
 import { badge } from '../lib/actions/navigator';

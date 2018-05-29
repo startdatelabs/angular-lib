@@ -1,11 +1,10 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { PolymerForm, PolymerFormComponent, PolymerFormValuesMap } from '../../lib/components/polymer-form';
 
 import { AutoUnsubscribe } from '../../lib/decorators/auto-unsubscribe';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { DrawerPanelComponent } from '../../lib/components/drawer-panel';
 import { LifecycleComponent } from '../../lib/components/lifecycle-component';
-import { Subscription } from 'rxjs/Subscription';
 import { map } from 'rxjs/operators';
 
 /**
@@ -58,8 +57,7 @@ export class TestSelectorComponent extends LifecycleComponent
   ];
 
   columns = new BehaviorSubject([]);
-
-  private subToForm: Subscription;
+  subToForm: Subscription;
 
   // lifecycle methods
 

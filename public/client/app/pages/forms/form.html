@@ -93,22 +93,19 @@
     </paper-radio-group>
   </div>
 
-  <div>
-    <vaadin-combo-box
+  <paper-dropdown-menu
+    label="Partner">
+    <paper-listbox
       [items]="partners"
       [sticky]="true"
       auto-validate
       error-message="Partner is always required"
       item-label-path="label"
       item-value-path="value"
-      label="Partner"
       libPolymerControl
       name="partner"
       prevent-invalid-input
       required>
-      <ng-template [polymer]="this" ngNonBindable>
-        <img src=[[item.logo]] style="max-height: 32px">
-      </ng-template>
       <iron-icon
         icon="account-box"
         primary
@@ -116,9 +113,9 @@
         slot="prefix"
         style="margin-right: 8px">
       </iron-icon>
-    </vaadin-combo-box>
-  </div>
-
+    </paper-listbox>
+  </paper-dropdown-menu>
+<!--
   <div>
     <vaadin-combo-box
       [sticky]="true"
@@ -139,7 +136,7 @@
         style="margin-right: 8px">
       </iron-icon>
     </vaadin-combo-box>
-  </div>
+  </div> -->
 
   <div>
     <paper-toggle-button

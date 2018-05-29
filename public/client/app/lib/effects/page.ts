@@ -5,7 +5,7 @@ import { map, tap, withLatestFrom } from 'rxjs/operators';
 
 import { Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { PageState } from '../reducers/page';
 import { Store } from '@ngrx/store';
 import { Title } from '@angular/platform-browser';

@@ -6,6 +6,4 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 if (environment.production)
   enableProdMode();
 
-platformBrowserDynamic().bootstrapModule(RootModule, {
-  enableLegacyTemplate: false
-});
+platformBrowserDynamic().bootstrapModule(RootModule);

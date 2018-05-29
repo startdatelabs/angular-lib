@@ -20,7 +20,7 @@
     [sticky]="true">
   </paper-input>
 
-  <vaadin-date-picker
+  <paper-input
     auto-validate
     error-message="Date is required"
     label="UTC Date"
@@ -28,8 +28,9 @@
     name="date"
     prevent-invalid-input
     required
+    type="text"
     [sticky]="true">
-  </vaadin-date-picker>
+  </paper-input>
 
   <paper-button
     (click)="form.submit()"

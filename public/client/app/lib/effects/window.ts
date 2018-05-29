@@ -3,15 +3,14 @@ import * as window from '../actions/window';
 import { Actions, Effect } from '@ngrx/effects';
 import { ConfiguratorService, MediaSizeBreaks } from '../services/configurator';
 import { MediaEvent, WatchCSSMedia } from '../utils/watch-css-media';
+import { Observable, Subscription } from 'rxjs';
 import { WindowState, initialState } from '../reducers/window';
 import { map, startWith, tap, withLatestFrom } from 'rxjs/operators';
 
 import { Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from 'angular-2-local-storage';
-import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Side-effects for window actions

@@ -1,6 +1,7 @@
+import { BehaviorSubject, Subscription } from 'rxjs';
+
 import { AfterContentInit } from '@angular/core';
 import { AutoUnsubscribe } from '../decorators/auto-unsubscribe';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { Component } from '@angular/core';
 import { ContentChildren } from '@angular/core';
@@ -14,7 +15,6 @@ import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { nextTick } from '../utils';
 
 /**
@@ -40,7 +40,7 @@ export class PolymerFormValuesMap {
  * libPolymerControl directive
  */
 
-export enum Control {CHECKBOX, COMBOBOX, DATE, HIDDEN, INPUT, MULTI, RADIO, SLIDER, TOGGLE}
+export enum Control {CHECKBOX, HIDDEN, INPUT, LISTBOX, MULTI, RADIO, SLIDER, TOGGLE}
 
 export type ListenerCallback = (control: PolymerControlDirective) => void;
 
@@ -72,15 +72,13 @@ export class PolymerControlDirective implements OnDestroy {
     const type = this.el.type? this.el.type.toLowerCase() : null;
     if (tagName === 'paper-checkbox')
       this.ctrl = Control.CHECKBOX;
-    else if (tagName === 'vaadin-combo-box')
-      this.ctrl = Control.COMBOBOX;
-    else if (tagName === 'vaadin-date-picker')
-      this.ctrl = Control.DATE;
     else if ((tagName === 'paper-input')
           || (tagName === 'paper-textarea'))
       this.ctrl = Control.INPUT;
     else if ((tagName === 'input') && (type === 'hidden'))
       this.ctrl = Control.HIDDEN;
+    else if (tagName === 'paper-listbox')
+      this.ctrl = Control.LISTBOX;
     else if (tagName === 'lib-multi-selector')
       this.ctrl = Control.MULTI;
     else if (tagName === 'paper-radio-group')
@@ -109,12 +107,12 @@ export class PolymerControlDirective implements OnDestroy {
       case Control.CHECKBOX:
         this.el.checked = false;
         break;
-      case Control.COMBOBOX:
-      case Control.DATE:
       case Control.HIDDEN:
       case Control.INPUT:
       case Control.SLIDER:
         this.el.value = null;
+        break;
+      case Control.LISTBOX:
         break;
       case Control.MULTI:
         this.el._proxy.value = null;
@@ -132,13 +130,12 @@ export class PolymerControlDirective implements OnDestroy {
   focus() {
     switch (this.ctrl) {
       case Control.CHECKBOX:
-      case Control.DATE:
       case Control.RADIO:
       case Control.SLIDER:
       case Control.TOGGLE:
         this.el.focus();
         break;
-      case Control.COMBOBOX:
+      case Control.LISTBOX:
       case Control.INPUT:
         this.el.focus();
         break;
@@ -152,17 +149,17 @@ export class PolymerControlDirective implements OnDestroy {
   isValid(): boolean {
     switch (this.ctrl) {
       case Control.CHECKBOX:
-      case Control.DATE:
       case Control.RADIO:
       case Control.SLIDER:
       case Control.TOGGLE:
         return this.el.invalid !== true;
-      case Control.COMBOBOX:
       case Control.HIDDEN:
       case Control.INPUT:
         // NOTE: the initial state of required fields may not set the invalid bit
         return (this.el.invalid !== true)
             && !(this.el.required && PolymerControlDirective.isEmpty(this.el.value));
+      case Control.LISTBOX:
+        return false;
       case Control.MULTI:
         return (this.el._proxy.invalid !== true)
             && !(this.el._proxy.required && PolymerControlDirective.isEmpty(this.el._proxy.value));
@@ -175,13 +172,10 @@ export class PolymerControlDirective implements OnDestroy {
       let evtNames: string[] = [];
       switch (this.ctrl) {
         case Control.CHECKBOX:
-        case Control.COMBOBOX:
+        case Control.LISTBOX:
         case Control.SLIDER:
         case Control.TOGGLE:
           evtNames = ['change'];
-          break;
-        case Control.DATE:
-          evtNames = ['value-changed'];
           break;
         case Control.MULTI:
         case Control.HIDDEN:
@@ -225,8 +219,6 @@ export class PolymerControlDirective implements OnDestroy {
     switch (this.ctrl) {
       case Control.CHECKBOX:
         return this.el.checked;
-      case Control.COMBOBOX:
-      case Control.DATE:
       case Control.SLIDER:
         return this.el.value;
       case Control.HIDDEN:
@@ -235,6 +227,8 @@ export class PolymerControlDirective implements OnDestroy {
         if (this.el.type === 'number')
           return PolymerControlDirective.isEmpty(this.el.value)? undefined : Number(this.el.value);
         else return this.el.value;
+      case Control.LISTBOX:
+        return null;
       case Control.MULTI:
         return this.el._proxy.value;
       case Control.RADIO:
@@ -249,8 +243,6 @@ export class PolymerControlDirective implements OnDestroy {
       case Control.CHECKBOX:
         this.el.checked = data;
         break;
-      case Control.COMBOBOX:
-      case Control.DATE:
       case Control.HIDDEN:
       case Control.SLIDER:
         this.el.value = PolymerControlDirective.isEmpty(data)? null : data;
@@ -259,6 +251,8 @@ export class PolymerControlDirective implements OnDestroy {
         if (this.el.type === 'number')
           this.el.value = PolymerControlDirective.isEmpty(data)? null : Number(data);
         else this.el.value = PolymerControlDirective.isEmpty(data)? null : data;
+        break;
+      case Control.LISTBOX:
         break;
       case Control.MULTI:
         this.el._proxy.value = PolymerControlDirective.isEmpty(data)? null : data;
@@ -305,9 +299,9 @@ export class PolymerFormComponent extends LifecycleComponent
   @Input() preSubmit: boolean;
   @Input() stickyKey: string;
 
+  changes: Subscription;
   stream = new BehaviorSubject(new PolymerForm());
 
-  private changes: Subscription;
   private controlByName = {};
   private model = new PolymerForm();
   private ready: boolean;

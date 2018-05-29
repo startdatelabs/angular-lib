@@ -2,14 +2,13 @@ import * as window from '../../lib/reducers/window';
 
 import { ActivatedRoute, Params } from '@angular/router';
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 
 import { AppState } from '../../reducers';
 import { AutoUnsubscribe } from '../../lib/decorators/auto-unsubscribe';
 import { LifecycleComponent } from '../../lib/components/lifecycle-component';
 import { MarkdownComponent } from '../../lib/components/markdown';
-import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Markdown demo page
@@ -27,9 +26,9 @@ export class MarkdownPageComponent extends LifecycleComponent
 
   @ViewChild('markdown') markdown: MarkdownComponent;
 
+  subToRoute: Subscription;
   windowState: Observable<window.WindowState>;
 
-  private subToRoute: Subscription;
 
   /** ctor */
   constructor(private route: ActivatedRoute,

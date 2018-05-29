@@ -1,7 +1,7 @@
+import { Observable, of } from 'rxjs';
+
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { PolymerFormValuesMap } from '../components/polymer-form';
-import { of } from 'rxjs/observable/of';
 
 /**
  * Model core data structures

@@ -1,4 +1,5 @@
 import { PagedData, PagedDataItem, PagedDataState } from '../services/paged-datasource';
+import { Subject, Subscription, merge } from 'rxjs';
 
 import { AfterContentInit } from '@angular/core';
 import { AutoUnsubscribe } from '../decorators/auto-unsubscribe';
@@ -13,10 +14,7 @@ import { OnInit } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { SortableColumnComponent } from '../components/sortable-column';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
 import { config } from '../config';
-import { merge } from 'rxjs/observable/merge';
 import { nextTick } from '../utils';
 
 /**
@@ -43,13 +41,13 @@ export class PagedDataTableComponent extends LifecycleComponent
   @Input() loading: boolean;
   @Input() width = config.pagedDataTableDefaultWidth;
 
+  changes: Subscription;
   model = new PagedDataState();
   selected = new Subject<PagedDataItem>();
+  sortListeners: Subscription;
   state = new Subject<PagedDataState>();
 
   private selectedItem: PagedDataItem;
-  private changes: Subscription;
-  private sortListeners: Subscription;
 
   /** ctor */
   constructor(private lstor: LocalStorageService) {

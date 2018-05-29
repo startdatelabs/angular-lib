@@ -5,7 +5,7 @@ import { Action } from '@ngrx/store';
 import { ConfiguratorService } from '../services/configurator';
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from 'angular-2-local-storage';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 import { Router } from '@angular/router';
 import { unique } from '../utils';

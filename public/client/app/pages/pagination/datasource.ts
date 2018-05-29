@@ -1,12 +1,11 @@
 import * as Faker from 'faker';
 
+import { Observable, of } from 'rxjs';
 import { PagedData, PagedDataItem, PagedDataSourceService, PagedDataState } from '../../lib/services/paged-datasource';
 import { delay, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { PolymerFormValuesMap } from '../../lib/components/polymer-form';
-import { of } from 'rxjs/observable/of';
 
 /**
  * Model the test data items

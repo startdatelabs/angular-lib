@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NavigatorItem } from '../components/navigator';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 /**
  * Provides configuraton settings for angular-lib components.

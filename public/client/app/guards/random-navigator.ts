@@ -1,7 +1,7 @@
+import { Observable, of } from 'rxjs';
+
 import { CanNavigate } from '../lib/components/navigator';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
 
 /**
  * Just a random test guard

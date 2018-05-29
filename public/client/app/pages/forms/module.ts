@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { FormsPageComponent } from './page';
 import { LibModule } from '../../lib';
-import { PolymerModule } from '@codebakery/origami';
 import { TestCtrlComponent } from './ctrl';
 import { TestFormComponent } from './form';
 
@@ -18,8 +17,7 @@ const COMPONENTS = [
 ];
 
 const MODULES = [
-  LibModule.forRoot(),
-  PolymerModule
+  LibModule.forRoot()
 ];
 
 const ROUTES: Routes = [

@@ -5,7 +5,7 @@ import { PolymerForm, PolymerFormValuesMap } from './polymer-form';
 import { AutoUnsubscribe } from '../decorators/auto-unsubscribe';
 import { ExportToCSVComponent } from './export-to-csv';
 import { LifecycleComponent } from './lifecycle-component';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { config } from '../config';
 import { nextTick } from '../utils';
 
@@ -41,10 +41,10 @@ export class ExportableDataComponent extends LifecycleComponent {
   ready = true;
   results = [];
   running = false;
+  subToLoad: Subscription;
 
   private frozenFilter: PolymerFormValuesMap;
   private frozenState: PagedDataState;
-  private subToLoad: Subscription;
   private ts: number;
 
   /** ctor */

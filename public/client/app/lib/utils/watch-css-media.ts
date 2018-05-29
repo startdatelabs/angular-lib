@@ -13,10 +13,8 @@
  * ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
+import { Subscription, fromEventPattern } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-
-import { Subscription } from 'rxjs/Subscription';
-import { fromEventPattern } from 'rxjs/observable/fromEventPattern';
 
 export class MediaEvent {
   matches: boolean;

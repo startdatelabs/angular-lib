@@ -2,7 +2,7 @@ import { Actions, Effect } from '@ngrx/effects';
 
 import { Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 /**

@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
+import { Subscription, of } from 'rxjs';
 
 import { AutoUnsubscribe } from '../decorators/auto-unsubscribe';
 import { HighlightJsService } from 'angular2-highlight-js';
 import { HttpClient } from '@angular/common/http';
 import { LifecycleComponent } from './lifecycle-component';
-import { Subscription } from 'rxjs/Subscription';
 import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 
 declare var marked: any;
 
@@ -26,7 +25,7 @@ export class MarkdownComponent extends LifecycleComponent {
 
   @ViewChild('markdown') markdown;
 
-  private subToLoader: Subscription;
+  subToLoader: Subscription;
 
   /** ctor */
   constructor(private hljs: HighlightJsService,

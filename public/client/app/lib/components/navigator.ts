@@ -3,15 +3,12 @@ import * as page from '../actions/page';
 import * as router from '@ngrx/router-store';
 
 import { AfterViewInit, ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
-import { filter, map, mergeMap } from 'rxjs/operators';
+import { Observable, from, of } from 'rxjs';
+import { combineLatest, filter, map, mergeMap } from 'rxjs/operators';
 
-import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs/operators';
 import { expando } from '../actions/navigator';
-import { from } from 'rxjs/observable/from';
-import { of } from 'rxjs/observable/of';
 
 /**
  * Model navigator

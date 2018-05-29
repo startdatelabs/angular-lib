@@ -2,7 +2,7 @@ import * as user from '../../lib/reducers/user';
 
 import { AppState } from '../../reducers';
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 /**

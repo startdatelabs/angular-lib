@@ -1,11 +1,9 @@
 import { CanActivate, CanActivateChild } from '@angular/router';
+import { Observable, from, of } from 'rxjs';
 import { catchError, flatMap, map } from 'rxjs/operators';
 
 import { AsyncLoader } from '../utils/async-loader';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { from } from 'rxjs/observable/from';
-import { of } from 'rxjs/observable/of';
 
 /**
  * Loads CodeMirror scripts and styles.

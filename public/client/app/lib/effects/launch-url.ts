@@ -6,7 +6,7 @@ import { map, startWith } from 'rxjs/operators';
 
 import { Action } from '@ngrx/store';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { parseInitialSearchParams } from '../utils';
 
 /**
