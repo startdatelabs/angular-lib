@@ -101,9 +101,9 @@ export function reverseMap(obj: any): any {
 }
 
 /**
- * Convert strings to vaadin-combo-box style items
+ * Convert strings to lib-single/multi-selector style items
  */
-export function toVaadinItems(tokens: string[]): {label, value}[] {
+export function toSelectorItems(tokens: string[]): {label, value}[] {
   return tokens.reduce((acc, token) => {
     acc.push({label: token, value: token});
     return acc;
@@ -111,9 +111,9 @@ export function toVaadinItems(tokens: string[]): {label, value}[] {
 }
 
 /**
- * Convert vaadin-combo-box style items to a lookup table
+ * Convert lib-single/multi-selector style items to a lookup table
  */
-export function toVaadinLookup(items: {label, value}[]): any {
+export function toSelectorLookup(items: {label, value}[]): any {
   return items.reduce((acc, item) => {
     acc[String(item.value)] = item.label;
     return acc;

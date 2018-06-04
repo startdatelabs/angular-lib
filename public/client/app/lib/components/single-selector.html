@@ -1,0 +1,38 @@
+<paper-dropdown-menu
+  [label]="label"
+  [required]="required"
+  (value-changed)="onChange($event)"
+  #dropDown>
+
+  <ng-content select="[slot=dropdown-prefix]"></ng-content>
+
+  <paper-listbox
+    slot="dropdown-content">
+
+    <ng-container
+      *ngFor="let item of items">
+
+      <paper-item
+        *ngIf="!item.logo">
+        <div class="label">{{item[itemLabelPath]}}</div>
+      </paper-item>
+
+      <paper-icon-item
+        *ngIf="item.logo">
+          <div class="icon" slot="item-icon">
+            <img [src]="item[itemIconPath]">
+          </div>
+          <div class="label">{{item[itemLabelPath]}}</div>
+      </paper-icon-item>
+
+    </ng-container>
+
+  </paper-listbox>
+
+</paper-dropdown-menu>
+
+<div
+  [ngStyle]="{visibility: isValid()? 'hidden' : 'visible'}"
+  class="single-selector-error">
+  {{errorMessage}}
+</div>

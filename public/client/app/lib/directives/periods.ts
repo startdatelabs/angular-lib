@@ -1,8 +1,9 @@
 import { ChangeDetectorRef, Directive, ElementRef, Input, ViewContainerRef } from '@angular/core';
 
 import { MultiSelectorComponent } from '../components/multi-selector';
+import { SingleSelectorComponent } from '../components/single-selector';
 import { config } from '../config';
-import { toVaadinLookup } from '../utils';
+import { toSelectorLookup } from '../utils';
 
 const AGO = [
   {label: 'Today', value: 'TODAY'},
@@ -55,7 +56,7 @@ const RELATIVE = [
   {label: 'Last month', value: 'LAST_MONTH'}
 ];
 
-const PERIODS_LOOKUP = toVaadinLookup([
+const PERIODS_LOOKUP = toSelectorLookup([
   ...AGO,
   ...MINUTES,
   ...MONTHS,
@@ -85,21 +86,23 @@ export class PeriodDirective {
 }
 
 /**
- * A directive to support selection of periods in <vaadin-combo-box>
+ * A directive to support selection of periods in <lib-single-selector>
  */
 
 @Directive ({
-  selector: 'vaadin-combo-box[libPeriods]'
+  selector: 'lib-single-selector[libPeriods]'
 })
 
 export class PeriodsComboDirective {
 
   /** ctor */
-  constructor(private element: ElementRef) { }
+  constructor(private vcf: ViewContainerRef) { }
 
   @Input() set period(period: string) {
-    if (period)
-      this.element.nativeElement.items = getPeriods(period);
+    if (period) {
+      const selector: SingleSelectorComponent = (<any>this.vcf)._data.componentView.component;
+      selector.items = getPeriods(period);
+    }
   }
 
 }

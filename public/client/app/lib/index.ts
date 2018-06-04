@@ -78,6 +78,7 @@ import { PagedDataTableComponent } from './components/paged-datatable';
 import { PolymerAppComponent } from './components/polymer-app';
 import { RouterEffects } from './effects/router';
 import { RouterModule } from '@angular/router';
+import { SingleSelectorComponent } from './components/single-selector';
 import { SortableColumnComponent } from './components/sortable-column';
 import { StatusbarComponent } from './components/statusbar';
 import { TinyButtonComponent } from './components/tiny-button';
@@ -121,6 +122,7 @@ const COMPONENTS = [
   PolymerAppComponent,
   PolymerControlDirective,
   PolymerFormComponent,
+  SingleSelectorComponent,
   SortableColumnComponent,
   StatusbarComponent,
   TinyButtonComponent,

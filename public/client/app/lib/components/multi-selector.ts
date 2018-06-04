@@ -13,7 +13,7 @@ import { QueryList } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { ViewChildren } from '@angular/core';
-import { toVaadinItems } from '../utils';
+import { toSelectorItems } from '../utils';
 
 /**
  * lib-multi-selector model
@@ -176,7 +176,7 @@ export class MultiSelectorComponent implements OnChanges, OnInit {
      && this.items
      && (this.items.length > 0)
      && (typeof this.items[0] === 'string'))
-      this.items = toVaadinItems(<any>this.items);
+      this.items = toSelectorItems(<any>this.items);
   }
 
   ngOnInit() {

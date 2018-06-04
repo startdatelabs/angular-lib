@@ -93,50 +93,31 @@
     </paper-radio-group>
   </div>
 
-  <paper-dropdown-menu
-    label="Partner">
-    <paper-listbox
-      [items]="partners"
-      [sticky]="true"
-      auto-validate
-      error-message="Partner is always required"
-      item-label-path="label"
-      item-value-path="value"
-      libPolymerControl
-      name="partner"
-      prevent-invalid-input
-      required>
-      <iron-icon
-        icon="account-box"
-        primary
-        small
-        slot="prefix"
-        style="margin-right: 8px">
-      </iron-icon>
-    </paper-listbox>
-  </paper-dropdown-menu>
-<!--
   <div>
-    <vaadin-combo-box
+    <lib-single-selector
+      [items]="partners"
+      [required]="true"
       [sticky]="true"
-      auto-validate
-      error-message="Period is always required"
+      errorMessage="Partner is always required"
+      itemIconPath="logo"
+      label="Partner"
+      libPolymerControl
+      name="partner">
+    </lib-single-selector>
+  </div>
+
+  <div>
+    <lib-single-selector
+      [required]="true"
+      [sticky]="true"
+      errorMessage="Period is always required"
       label="Period"
       libPeriods
       libPolymerControl
       name="period"
-      period="ago"
-      prevent-invalid-input
-      required>
-      <iron-icon
-        icon="date-range"
-        primary
-        small
-        slot="prefix"
-        style="margin-right: 8px">
-      </iron-icon>
-    </vaadin-combo-box>
-  </div> -->
+      period="ago">
+    </lib-single-selector>
+  </div>
 
   <div>
     <paper-toggle-button

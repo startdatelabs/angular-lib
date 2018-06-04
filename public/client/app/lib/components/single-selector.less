@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+paper-dropdown-menu {
+  width: 100%;
+
+  paper-icon-item {
+
+    .icon {
+      margin: 4px 16px;
+
+      img {
+        max-height: 32px;
+      }
+      
+    }
+
+    .label {
+      display: inline-block;
+      overflow: hidden;
+      width: 0;
+    }
+
+  }
+
+  paper-item {
+
+    .label {
+      margin-right: 16px;
+      white-space: nowrap;
+    }
+
+  }
+
+}
+
+.single-selector-error {
+  color: var(--error-color);
+  font-size: 12px;
+  margin-top: -4px;
+}

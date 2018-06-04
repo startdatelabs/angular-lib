@@ -1,6 +1,7 @@
-import { AfterViewInit, ChangeDetectorRef, Directive, ElementRef, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Directive, ViewContainerRef } from '@angular/core';
 
 import { MultiSelectorComponent } from '../components/multi-selector';
+import { SingleSelectorComponent } from '../components/single-selector';
 
 // THIS IS JUST A TEST DIRECTIVE -- DON'T EXPECT ANY USERS
 
@@ -25,18 +26,19 @@ const DAYS_OF_WEEK_ALT = [
 ];
 
 /**
- * A directive to support selection of day of week in <vaadin-combo-box>
+ * A directive to support selection of day of week in <lib-single-selector>
  */
 
 @Directive ({
-  selector: 'vaadin-combo-box[libDaysOfWeek]'
+  selector: 'lib-single-selector[libDaysOfWeek]'
 })
 
 export class DaysOfWeekComboDirective {
 
   /** ctor */
-  constructor(element: ElementRef) {
-    element.nativeElement.items = DAYS_OF_WEEK;
+  constructor(vcf: ViewContainerRef) {
+    const selector: SingleSelectorComponent = (<any>vcf)._data.componentView.component;
+    selector.items = DAYS_OF_WEEK;
   }
 
 }
