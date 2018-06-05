@@ -40,7 +40,7 @@
 </div>
 
 <div
-  *ngIf="isInvalid()"
+  *ngIf="!isValid()"
   class="multi-selector-error">
   {{errorMessage}}
 </div>
@@ -53,9 +53,3 @@
     {{label}}
   </span>
 </div>
-
-<input
-  [attr.required]="required? 'true' : null"
-  #proxy
-  type="hidden"
-  value="">

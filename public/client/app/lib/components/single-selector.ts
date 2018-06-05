@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { Component } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import { Input } from '@angular/core';
+import { PolymerValueType } from './polymer-form';
 import { ViewChild } from '@angular/core';
 
 /**
@@ -39,14 +40,6 @@ export class SingleSelectorComponent {
     this.dropDown.nativeElement.focus();
   }
 
-  /** Access control value */
-  getValue(): boolean | number | string {
-    const label = this.dropDown.nativeElement.value;
-    const item = this.items
-      .find(item => item[this.itemLabelPath] === label);
-    return item? item[this.itemValuePath] : null;
-  }
-
   /** Is this control valid? */
   isValid(): boolean {
     return this.dropDown.nativeElement.validate();
@@ -57,8 +50,16 @@ export class SingleSelectorComponent {
     this.listener = listener;
   }
 
-  /** Mutate control value */
-  setValue(value: boolean | number | string): void {
+  // property accessors / mutators
+
+  get value(): PolymerValueType {
+    const label = this.dropDown.nativeElement.value;
+    const item = this.items
+      .find(item => item[this.itemLabelPath] === label);
+    return item? item[this.itemValuePath] : null;
+  }
+
+  set value(value: PolymerValueType) {
     const item = this.items
       .find(item => item[this.itemValuePath] === value);
     this.dropDown.nativeElement.value = item? item[this.itemLabelPath] : null;

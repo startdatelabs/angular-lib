@@ -7,11 +7,10 @@ import { HostBinding } from '@angular/core';
 import { HostListener } from '@angular/core';
 import { Input } from '@angular/core';
 import { OnChanges } from '@angular/core';
-import { OnInit } from '@angular/core';
 import { Output } from '@angular/core';
+import { PolymerValueType } from './polymer-form';
 import { QueryList } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
-import { ViewChild } from '@angular/core';
 import { ViewChildren } from '@angular/core';
 import { toSelectorItems } from '../utils';
 
@@ -56,7 +55,7 @@ export class MultiSelectorControlDirective {
   templateUrl: 'multi-selector.html'
 })
 
-export class MultiSelectorComponent implements OnChanges, OnInit {
+export class MultiSelectorComponent implements OnChanges {
 
   @HostBinding('class.in-focus') get inFocus() { return this.focussed; }
   @HostBinding('class.out-of-focus') get outOfFocus() { return !this.focussed; }
@@ -67,40 +66,37 @@ export class MultiSelectorComponent implements OnChanges, OnInit {
   @Input() label = '';
   @Input() required = false;
   @Input() separator = '^';
+  @Input() sortLabels = true;
 
   @Output() change = new EventEmitter<string[]>();
 
-  @ViewChild('proxy') _proxy: ElementRef;
   @ViewChildren(MultiSelectorControlDirective) controls: QueryList<MultiSelectorControlDirective>;
 
   private focussed: boolean;
-  private input: HTMLInputElement;
+  private listener: Function;
 
-  /** ctor */
-  constructor(private element: ElementRef) { }
+  private _value: PolymerValueType;
 
   /** Item value changes */
   check(event: any,
         item: MultiSelectorItem) {
-    let values: any = this.input.value? this.input.value.split(this.separator) : [];
-    if (typeof item.value === 'number')
-      values = values.map(value => Number(value));
+    const values = this.splitValues();
     // remove any old value
-    const ix = values.indexOf(item.value);
+    const ix = values.indexOf(String(item.value));
     if (ix !== -1)
       values.splice(ix, 1);
     // add in the new one
     if (event.target.checked)
-      values[values.length] = item.value;
+      values[values.length] = String(item.value);
     values.sort();
     this.change.emit(values);
-    this.input.value = values.join(this.separator);
-    this.input.dispatchEvent(new Event('change'));
+    this._value = values.join(this.separator);
+    this.onChange(new CustomEvent('value-changed'));
   }
 
   /** Clear all selections */
   clear() {
-    this.input.value = '';
+    this._value = null;
   }
 
   /** Inner checkbox gains/loses focus */
@@ -110,16 +106,13 @@ export class MultiSelectorComponent implements OnChanges, OnInit {
 
   /** Is this item checked? */
   isChecked(item: MultiSelectorItem): boolean {
-    if (this.input.value) {
-      const values = this.input.value.split(this.separator);
-      return (values.indexOf(item.value) !== -1);
-    }
-    else return false;
+    const values = this.splitValues();
+    return (values.indexOf(String(item.value)) !== -1);
   }
 
-  /** Is this selector invalid? */
-  isInvalid(): boolean {
-    return this.input.required && !this.input.value;
+  /** Is this selector valid? */
+  isValid(): boolean {
+    return !this.required || !!this._value;
   }
 
   /** Scroll to the control referenced by this label */
@@ -133,18 +126,30 @@ export class MultiSelectorComponent implements OnChanges, OnInit {
     });
   }
 
+  /** Establish a change listener */
+  setListener(listener: Function): void {
+    this.listener = listener;
+  }
+
   // property accessors / mutators
 
   get labels(): string[] {
-    if (this.input.value) {
-      const values = this.input.value.split(this.separator);
-      return this.items.reduce((result, item) => {
-        if (values.indexOf(item.value) !== -1)
-          result.push(item.label);
-        return result;
-      }, []).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
-    }
-    else return [];
+    const values = this.splitValues();
+    const labels = this.items.reduce((result, item) => {
+      if (values.indexOf(String(item.value)) !== -1)
+        result.push(item.label);
+      return result;
+    }, []);
+    return this.sortLabels?
+      labels.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())) : labels;
+  }
+
+  get value(): PolymerValueType {
+    return this._value;
+  }
+
+  set value(value: PolymerValueType) {
+    this._value = value;
   }
 
   // listeners
@@ -169,6 +174,13 @@ export class MultiSelectorComponent implements OnChanges, OnInit {
     });
   }
 
+  // event listeners
+
+  onChange(event: CustomEvent): void {
+    if (this.listener)
+      this.listener();
+  }
+
   // lifecycle methods
 
   ngOnChanges(changes: SimpleChanges) {
@@ -179,9 +191,10 @@ export class MultiSelectorComponent implements OnChanges, OnInit {
       this.items = toSelectorItems(<any>this.items);
   }
 
-  ngOnInit() {
-    this.input = this._proxy.nativeElement;
-    this.element.nativeElement._proxy = this.input;
+  // private methods
+
+  private splitValues(): string[] {
+    return this._value? (<string>this._value).split(this.separator) : [];
   }
 
 }

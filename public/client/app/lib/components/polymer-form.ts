@@ -11,6 +11,7 @@ import { HostListener } from '@angular/core';
 import { Input } from '@angular/core';
 import { LifecycleComponent } from './lifecycle-component';
 import { LocalStorageService } from 'angular-2-local-storage';
+import { MultiSelectorComponent } from '../components/multi-selector';
 import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
@@ -24,6 +25,8 @@ import { nextTick } from '../utils';
  * lib-polymer-form model
  */
 
+export type PolymerValueType = boolean | number | string;
+
 export class PolymerForm {
   isValid = false;
   submitted = false;
@@ -36,7 +39,7 @@ export class PolymerFormValiditiesMap {
 }
 
 export class PolymerFormValuesMap {
-  [s: string]: boolean | number | string;
+  [s: string]: PolymerValueType;
 }
 
 /**
@@ -52,7 +55,7 @@ export type ListenerCallback = (control: PolymerControlDirective) => void;
 })
 
 export class PolymerControlDirective implements OnDestroy, OnInit {
-  @Input('default') dflt: boolean | number | string;
+  @Input('default') dflt: PolymerValueType;
   @Input() name: string;
   @Input() sticky: boolean;
 
@@ -118,7 +121,7 @@ export class PolymerControlDirective implements OnDestroy, OnInit {
         this.el.value = null;
         break;
       case Control.MULTI:
-        this.el._proxy.value = null;
+        (<MultiSelectorComponent>this.comp).clear();
         break;
       case Control.SELECT:
         (<SingleSelectorComponent>this.comp).clear();
@@ -167,8 +170,7 @@ export class PolymerControlDirective implements OnDestroy, OnInit {
         return (this.el.invalid !== true)
             && !(this.el.required && PolymerControlDirective.isEmpty(this.el.value));
       case Control.MULTI:
-        return (this.el._proxy.invalid !== true)
-            && !(this.el._proxy.required && PolymerControlDirective.isEmpty(this.el._proxy.value));
+        return (<MultiSelectorComponent>this.comp).isValid();
       case Control.SELECT:
         return (<SingleSelectorComponent>this.comp).isValid();
     }
@@ -181,7 +183,6 @@ export class PolymerControlDirective implements OnDestroy, OnInit {
       switch (this.ctrl) {
         case Control.CHECKBOX:
         case Control.HIDDEN:
-        case Control.MULTI:
         case Control.SLIDER:
         case Control.TOGGLE:
           evtNames = ['change'];
@@ -192,6 +193,7 @@ export class PolymerControlDirective implements OnDestroy, OnInit {
         case Control.RADIO:
           evtNames = ['paper-radio-group-changed'];
           break;
+        case Control.MULTI:
         case Control.SELECT:
           evtNames = ['value-changed'];
           break;
@@ -203,8 +205,6 @@ export class PolymerControlDirective implements OnDestroy, OnInit {
         // oh oh -- bit of a hack here
         if (this.comp)
           this.comp.setListener(this.listener);
-        else if (this.el._proxy)
-          this.el._proxy.addEventListener(evtName, this.listener);
         else this.el.addEventListener(evtName, this.listener);
       });
     }
@@ -217,8 +217,6 @@ export class PolymerControlDirective implements OnDestroy, OnInit {
         // oh oh -- bit of a hack here
         if (this.comp)
           this.comp.setListener(null);
-        else if (this.el._proxy)
-          this.el._proxy.removeEventListener(evtName, this.listener);
         else this.el.removeEventListener(evtName, this.listener);
       });
       this.listener = null;
@@ -227,7 +225,7 @@ export class PolymerControlDirective implements OnDestroy, OnInit {
 
   // property accessors / mutators
 
-  get value(): boolean | number | string {
+  get value(): PolymerValueType {
     switch (this.ctrl) {
       case Control.CHECKBOX:
         return this.el.checked;
@@ -239,9 +237,9 @@ export class PolymerControlDirective implements OnDestroy, OnInit {
           return PolymerControlDirective.isEmpty(this.el.value)? undefined : Number(this.el.value);
         else return this.el.value;
       case Control.MULTI:
-        return this.el._proxy.value;
+        return (<MultiSelectorComponent>this.comp).value;
       case Control.SELECT:
-        return (<SingleSelectorComponent>this.comp).getValue();
+        return (<SingleSelectorComponent>this.comp).value;
       case Control.RADIO:
         return this.el.selected;
       case Control.TOGGLE:
@@ -249,7 +247,7 @@ export class PolymerControlDirective implements OnDestroy, OnInit {
     }
   }
 
-  set value(data: boolean | number | string) {
+  set value(data: PolymerValueType) {
     switch (this.ctrl) {
       case Control.CHECKBOX:
         this.el.checked = data;
@@ -264,10 +262,10 @@ export class PolymerControlDirective implements OnDestroy, OnInit {
         else this.el.value = PolymerControlDirective.isEmpty(data)? null : data;
         break;
       case Control.MULTI:
-        this.el._proxy.value = PolymerControlDirective.isEmpty(data)? null : data;
+        (<MultiSelectorComponent>this.comp).value = data;
         break;
       case Control.SELECT:
-        (<SingleSelectorComponent>this.comp).setValue(data);
+        (<SingleSelectorComponent>this.comp).value = data;
         break;
       case Control.RADIO:
         this.el.selected = data;
@@ -286,6 +284,7 @@ export class PolymerControlDirective implements OnDestroy, OnInit {
 
   ngOnInit() {
     switch (this.ctrl) {
+      case Control.MULTI:
       case Control.SELECT:
         this.comp = (<any>this.vcf)._data.componentView.component;
         break;
@@ -347,7 +346,7 @@ export class PolymerFormComponent extends LifecycleComponent
   }
 
   /** Get a control by name */
-  get(name: string): boolean | number | string {
+  get(name: string): PolymerValueType {
     const control = this.controlByName[name];
     return (control)? control.value : null;
   }
@@ -397,7 +396,7 @@ export class PolymerFormComponent extends LifecycleComponent
 
   /** Set a control by name */
   set(name: string,
-      value: boolean | number | string) {
+      value: PolymerValueType) {
     const control = this.controlByName[name];
     if (control) {
       control.value = value;
