@@ -1,5 +1,6 @@
 {
   "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
     "genDir": "./dist",
     "skipMetadataEmit": false,
     "skipTemplateCodegen": true,
