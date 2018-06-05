@@ -1,11 +1,11 @@
 import * as chalk from 'chalk';
+import * as child_process from 'child_process';
 import * as del from 'del';
 import * as gulp from 'gulp';
 import * as inliner from 'gulp-inline-ng2-template';
 import * as less from 'less';
 import * as merge from 'merge-stream';
 import * as minifier from 'html-minifier';
-import * as ngc from '@angular/compiler-cli/src/main';
 import * as path from 'path';
 
 // globals
@@ -47,7 +47,7 @@ function inline() {
 
 // minify HTML
 function minify(path, ext, file, cb) {
-  console.log('Inlining HTML', chalk['blue'](`${path}`));
+  console.log('Inlining HTML', chalk['blue'](path));
   const output = minifier.minify(file, {
     caseSensitive: true,
     collapseInlineTagWhitespace: true,
@@ -72,10 +72,10 @@ function purge() {
 
 // convert styles to CSS
 function toCSS(path, ext, file, cb) {
-  console.log('Inlining LESS', chalk['green'](`${path}`));
+  console.log('Inlining LESS', chalk['green'](path));
   less.render(file, {compress: true}, function(e, output) {
     if (e)
-      console.log(chalk['red'](e, `${path}`), chalk['yellow'](file));
+      console.log(chalk['red'](e, path), chalk['yellow'](file));
     else cb(null, output.css);
   });
 }
@@ -93,8 +93,13 @@ gulp.task('pre-process', ['clean'], function() {
   );
 });
 
-gulp.task('build', ['pre-process'], function() {
-  return ngc.main(['-p', './lib.tsconfig.json']);
+gulp.task('build', ['pre-process'], function(cb) {
+  const ngc = '../../../node_modules/.bin/tsc -p ./lib.tsconfig.json';
+  child_process.exec(ngc, function(err, stdout, stderr) {
+    console.log(chalk['white'](stdout));
+    console.log(chalk['red'](stderr));
+    cb(err);
+  });
 });
 
 gulp.task('post-process', ['build'], function() {
