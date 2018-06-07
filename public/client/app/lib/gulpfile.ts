@@ -94,8 +94,8 @@ gulp.task('pre-process', ['clean'], function() {
 });
 
 gulp.task('build', ['pre-process'], function(cb) {
-  const ngc = '../../../node_modules/.bin/tsc -p ./lib.tsconfig.json';
-  child_process.exec(ngc, function(err, stdout, stderr) {
+  const compiler = '../../../node_modules/.bin/tsc -p ./lib.tsconfig.json';
+  child_process.exec(compiler, function(err, stdout, stderr) {
     console.log(chalk['white'](stdout));
     console.log(chalk['red'](stderr));
     cb(err);
