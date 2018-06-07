@@ -4,26 +4,22 @@
   (value-changed)="onChange($event)"
   #dropDown>
 
-  <ng-content select="[slot=dropdown-prefix]"></ng-content>
-
   <paper-listbox
     slot="dropdown-content">
 
     <ng-container
       *ngFor="let item of items">
 
+      <ng-container
+        [ngTemplateOutlet]="template"
+        [ngTemplateOutletContext]="{$implicit: item}"
+        *ngIf="template">
+      </ng-container>
+
       <paper-item
-        *ngIf="!item.logo">
+        *ngIf="!template">
         <div class="label">{{item[itemLabelPath]}}</div>
       </paper-item>
-
-      <paper-icon-item
-        *ngIf="item.logo">
-          <div class="icon" slot="item-icon">
-            <img [src]="item[itemIconPath]">
-          </div>
-          <div class="label">{{item[itemLabelPath]}}</div>
-      </paper-icon-item>
 
     </ng-container>
 

@@ -99,10 +99,22 @@
       [required]="true"
       [sticky]="true"
       errorMessage="Partner is always required"
-      itemIconPath="logo"
       label="Partner"
       libPolymerControl
       name="partner">
+      <ng-template let-item>
+        <paper-item>
+          <div>
+            <img
+              [src]="item.logo"
+              style="max-height: 32px">
+            <div
+              style="font-size: 0.66rem">
+              {{item.label}}
+            </div>
+          </div>
+        </paper-item>
+      </ng-template>
     </lib-single-selector>
   </div>
 

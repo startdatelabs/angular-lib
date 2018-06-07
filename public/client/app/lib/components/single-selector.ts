@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, ContentChild, TemplateRef } from '@angular/core';
+
 import { Component } from '@angular/core';
 import { ElementRef } from '@angular/core';
 import { Input } from '@angular/core';
@@ -18,8 +19,9 @@ import { ViewChild } from '@angular/core';
 
 export class SingleSelectorComponent {
 
+  @ContentChild(TemplateRef) template: TemplateRef<any>;
+
   @Input() errorMessage = '';
-  @Input() itemIconPath = 'icon';
   @Input() itemLabelPath = 'label';
   @Input() itemValuePath = 'value';
   @Input() items = [];
