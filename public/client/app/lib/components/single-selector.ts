@@ -21,6 +21,7 @@ export class SingleSelectorComponent {
 
   @ContentChild(TemplateRef) template: TemplateRef<any>;
 
+  @Input() disabled = false;
   @Input() errorMessage = '';
   @Input() itemLabelPath = 'label';
   @Input() itemValuePath = 'value';
@@ -55,16 +56,22 @@ export class SingleSelectorComponent {
   // property accessors / mutators
 
   get value(): PolymerValueType {
-    const label = this.dropDown.nativeElement.value;
-    const item = this.items
-      .find(item => item[this.itemLabelPath] === label);
-    return item? item[this.itemValuePath] : null;
+    if (this.items) {
+      const label = this.dropDown.nativeElement.value;
+      const item = this.items
+        .find(item => item[this.itemLabelPath] === label);
+      return item? item[this.itemValuePath] : null;
+    }
+    else return null;
   }
 
   set value(value: PolymerValueType) {
-    const item = this.items
-      .find(item => item[this.itemValuePath] === value);
-    this.dropDown.nativeElement.value = item? item[this.itemLabelPath] : null;
+    if (this.items) {
+      const item = this.items
+        .find(item => item[this.itemValuePath] === value);
+      this.dropDown.nativeElement.value = item? item[this.itemLabelPath] : null;
+    }
+    else this.dropDown.nativeElement.value = null;
   }
 
   // event listeners
