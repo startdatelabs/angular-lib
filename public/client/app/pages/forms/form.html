@@ -134,11 +134,12 @@
       libPolymerControl
       name="period"
       period="ago">
-      <iron-icon
-        icon="lock"
-        small
+      <div
+        [ngClass]="'path'"
+        class="http-parameter-in"
         slot="prefix">
-      </iron-icon>
+        path
+      </div>
     </lib-single-selector>
   </div>
 
