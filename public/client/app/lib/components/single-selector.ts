@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, ContentChild, ElementRef, HostListe
 
 import { PolymerValueType } from './polymer-form';
 import { ViewChild } from '@angular/core';
-import { isParentElementOf } from '../../lib/utils';
+import { isParentElementOf } from '../utils';
 
 /**
  * lib-single-selector component
