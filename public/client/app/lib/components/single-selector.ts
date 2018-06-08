@@ -1,5 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChild, ElementRef, HostListener, Input, OnDestroy, TemplateRef } from '@angular/core'; // tslint:disable-line
 
+import { LifecycleComponent } from './lifecycle-component';
+import { OnChange } from '../decorators/onchange';
 import { PolymerValueType } from './polymer-form';
 import { ViewChild } from '@angular/core';
 import { isParentElementOf } from '../utils';
@@ -15,7 +17,8 @@ import { isParentElementOf } from '../utils';
   templateUrl: 'single-selector.html'
 })
 
-export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
+export class SingleSelectorComponent extends LifecycleComponent
+                                     implements AfterViewInit, OnDestroy {
 
   @ContentChild(TemplateRef) template: TemplateRef<any>;
 
@@ -34,10 +37,12 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
 
   private cyListbox = 0;
   private listener: Function;
-  private originals;
+  private originals = [];
 
   /** ctor */
-  constructor(private element: ElementRef) { }
+  constructor(private element: ElementRef) {
+    super();
+  }
 
   /** Clear control */
   clear(): void {
@@ -46,9 +51,7 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
 
   /** Filter selectable items */
   filterItems(filter: string): void {
-    if (filter && (filter.length > 0) && this.items) {
-      if (!this.originals)
-        this.originals = this.items.slice(0);
+    if (filter && (filter.length > 0)) {
       const match = this.originals.some(item => item[this.itemLabelPath] === filter);
       this.items = match? this.originals : this.originals.filter(item => {
         return item[this.itemLabelPath].toLowerCase().includes(filter.toLowerCase());
@@ -90,27 +93,18 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
   // property accessors / mutators
 
   get value(): PolymerValueType {
-    if (this.items) {
-      const label = this.input.nativeElement.value;
-      const item = this.items
-        .find(item => item[this.itemLabelPath] === label);
-      return item? item[this.itemValuePath] : null;
-    }
-    else return null;
+    const label = this.input.nativeElement.value;
+    const item = this.items
+      .find(item => item[this.itemLabelPath] === label);
+    return item? item[this.itemValuePath] : null;
   }
 
   set value(value: PolymerValueType) {
-    if (this.items) {
-      const ix = this.items
-        .findIndex(item => item[this.itemValuePath] === value);
-      this.input.nativeElement.value = (ix !== -1)?
-        this.items[ix][this.itemLabelPath] : null;
-      this.listbox.nativeElement.select(ix);
-    }
-    else {
-      this.input.nativeElement.value = null;
-      this.listbox.nativeElement.select(0);
-    }
+    const ix = this.items
+      .findIndex(item => item[this.itemValuePath] === value);
+    this.input.nativeElement.value = (ix !== -1)?
+      this.items[ix][this.itemLabelPath] : null;
+    this.listbox.nativeElement.select(ix);
   }
 
   // event listeners
@@ -130,9 +124,24 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  // bind OnChange handlers
+
+  @OnChange('items') newItems() {
+    if (!this.items)
+      this.items = [];
+    if (this.items.length > 0) {
+      this.items = this.items.map(item => {
+        return (typeof item === 'string')?
+          { [this.itemLabelPath]: item, [this.itemValuePath]: item } : item;
+      });
+    }
+    this.originals = this.items.slice(0);
+  }
+
   // lifecycle methods
 
   ngAfterViewInit(): void {
+    this.newItems();
     document.body.appendChild(this.listbox.nativeElement);
     this.cyListbox = this.listbox.nativeElement.offsetHeight;
   }
