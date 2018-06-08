@@ -1,10 +1,8 @@
-import { ChangeDetectionStrategy, ContentChild, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, ElementRef, HostListener, Input, TemplateRef } from '@angular/core';
 
-import { Component } from '@angular/core';
-import { ElementRef } from '@angular/core';
-import { Input } from '@angular/core';
 import { PolymerValueType } from './polymer-form';
 import { ViewChild } from '@angular/core';
+import { isParentElementOf } from '../../lib/utils';
 
 /**
  * lib-single-selector component
@@ -29,23 +27,44 @@ export class SingleSelectorComponent {
   @Input() label = '';
   @Input() required = false;
 
-  @ViewChild('dropDown') dropDown: ElementRef;
+  @ViewChild('input') input: ElementRef;
+  @ViewChild('listbox') listbox: ElementRef;
+
+  hideListbox = true;
 
   private listener: Function;
+  private originals;
+
+  /** ctor */
+  constructor(private element: ElementRef) { }
 
   /** Clear control */
   clear(): void {
-    this.dropDown.nativeElement.value = null;
+    this.value = null;
+  }
+
+  /** Filter selectable items */
+  filterItems(filter: string): void {
+    if (filter && (filter.length > 0) && this.items) {
+      if (!this.originals)
+        this.originals = this.items.slice(0);
+      const match = this.originals.some(item => item[this.itemLabelPath] === filter);
+      this.items = match? this.originals : this.originals.filter(item => {
+        return item[this.itemLabelPath].toLowerCase().includes(filter.toLowerCase());
+      });
+      if (this.items.length === 0)
+        this.items = this.originals;
+    }
   }
 
   /** Focus control */
   focus(): void {
-    this.dropDown.nativeElement.focus();
+    this.input.nativeElement.focus();
   }
 
   /** Is this control valid? */
   isValid(): boolean {
-    return this.dropDown.nativeElement.validate();
+    return this.input.nativeElement.validate();
   }
 
   /** Establish a change listener */
@@ -53,11 +72,22 @@ export class SingleSelectorComponent {
     this.listener = listener;
   }
 
+  /** Show the listbox */
+  showListbox(target: any): void {
+    if (target.focused)
+      this.hideListbox = false;
+  }
+
+  /** Toggle show/hide the listbox */
+  toggleListbox(): void {
+    this.hideListbox = !this.hideListbox;
+  }
+
   // property accessors / mutators
 
   get value(): PolymerValueType {
     if (this.items) {
-      const label = this.dropDown.nativeElement.value;
+      const label = this.input.nativeElement.value;
       const item = this.items
         .find(item => item[this.itemLabelPath] === label);
       return item? item[this.itemValuePath] : null;
@@ -67,18 +97,33 @@ export class SingleSelectorComponent {
 
   set value(value: PolymerValueType) {
     if (this.items) {
-      const item = this.items
-        .find(item => item[this.itemValuePath] === value);
-      this.dropDown.nativeElement.value = item? item[this.itemLabelPath] : null;
+      const ix = this.items
+        .findIndex(item => item[this.itemValuePath] === value);
+      this.input.nativeElement.value = (ix !== -1)?
+        this.items[ix][this.itemLabelPath] : null;
+      this.listbox.nativeElement.select(ix);
     }
-    else this.dropDown.nativeElement.value = null;
+    else {
+      this.input.nativeElement.value = null;
+      this.listbox.nativeElement.select(0);
+    }
   }
 
   // event listeners
 
-  onChange(event: CustomEvent): void {
-    if (this.listener)
-      this.listener();
+  @HostListener('window:click', ['$event']) onClick(event): void {
+    if (!isParentElementOf(this.element.nativeElement, event.target))
+      this.hideListbox = true;
+  }
+
+  onSelect(selected: number): void {
+    if ((selected != null) && (selected !== -1)) {
+      this.input.nativeElement.value = this.items?
+        this.items[selected][this.itemLabelPath] : null;
+      this.hideListbox = true;
+      if (this.listener)
+        this.listener();
+    }
   }
 
 }

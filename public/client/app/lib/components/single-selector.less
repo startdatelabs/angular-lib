@@ -1,23 +1,37 @@
 :host {
   display: block;
+  position: relative;
 }
 
-paper-dropdown-menu {
-  width: 100%;
+paper-input {
 
-  paper-item {
-
-    .label {
-      margin-right: 16px;
-      white-space: nowrap;
-    }
-
+  [slot=suffix] {
+    display: grid;
+    grid-template-columns: auto auto;
   }
 
 }
 
-.single-selector-error {
-  color: var(--error-color);
-  font-size: 12px;
-  margin-top: -4px;
+paper-listbox {
+  border-color: var(--paper-grey-500);
+  border-style: solid;
+  border-width: 1px 0 1px 1px;
+  cursor: pointer;
+  display: block;
+  max-height: 300px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: absolute;
+  top: 56px;
+  width: 100%;
+  z-index: 1;
+
+  &.hidden {
+    display: none;
+  }
+
+  .iron-selected {
+    background-color: var(--paper-grey-100);
+  }
+
 }

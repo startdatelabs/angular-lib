@@ -8,6 +8,18 @@ import { LibQueryEncoder } from './query-encoder';
 
 
 /**
+ * composedPath() is not standard on all browsers
+ */
+export function composedPath(el: HTMLElement): HTMLElement[] {
+  const path: HTMLElement[] = [];
+  while (el && (el.tagName !== 'HTML')) {
+    path.push(el);
+    el = el.parentElement;
+  }
+  return path;
+}
+
+/**
  * Simple debounce; useful when no stream is at play
  */
 export function debounce(func: Function,
@@ -52,6 +64,22 @@ export function decodeRoute(key: string): string {
  */
 export function encodeRoute(key: string): string {
   return btoa(key).replace(/=/g, '_');
+}
+
+/**
+ * @see composedPath()
+ */
+export function isParentElementOf(parent: HTMLElement,
+                                  child: HTMLElement): boolean {
+  let isParent = false;
+  while (child && (child.tagName !== 'HTML')) {
+    if (child === parent) {
+      isParent = true;
+      break;
+    }
+    child = child.parentElement;
+  }
+  return isParent;
 }
 
 /**

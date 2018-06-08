@@ -1,35 +1,57 @@
-<paper-dropdown-menu
+<paper-input
+  (focused-changed)="showListbox($event.target)"
+  (value-changed)="filterItems($event.target.value)"
   [disabled]="disabled"
+  [errorMessage]="errorMessage"
   [label]="label"
+  [readonly]="true"
   [required]="required"
-  (value-changed)="onChange($event)"
-  #dropDown>
+  auto-validate
+  prevent-invalid-input
+  type="text"
+  #input>
 
-  <paper-listbox
-    slot="dropdown-content">
+  <ng-content select="[slot=prefix]"></ng-content>
+
+  <div slot="suffix">
+
+    <paper-icon-button
+      (click)="clear()"
+      icon="clear"
+      suffix
+      tabindex="-1">
+    </paper-icon-button>
+
+    <paper-icon-button
+      (mousedown)="toggleListbox()"
+      [icon]="hideListbox? 'arrow-drop-down' : 'arrow-drop-up'"
+      suffix
+      tabindex="-1">
+    </paper-icon-button>
+
+  </div>
+
+</paper-input>
+
+<paper-listbox
+  (selected-changed)="onSelect($event.target.selected)"
+  [ngClass]="{hidden: hideListbox}"
+  #listbox>
+
+  <ng-container
+    *ngFor="let item of items">
 
     <ng-container
-      *ngFor="let item of items">
-
-      <ng-container
-        [ngTemplateOutlet]="template"
-        [ngTemplateOutletContext]="{$implicit: item}"
-        *ngIf="template">
-      </ng-container>
-
-      <paper-item
-        *ngIf="!template">
-        <div class="label">{{item[itemLabelPath]}}</div>
-      </paper-item>
-
+      [ngTemplateOutlet]="template"
+      [ngTemplateOutletContext]="{$implicit: item}"
+      *ngIf="template">
     </ng-container>
 
-  </paper-listbox>
+    <paper-item
+      *ngIf="!template">
+      <div class="label">{{item[itemLabelPath]}}</div>
+    </paper-item>
 
-</paper-dropdown-menu>
+  </ng-container>
 
-<div
-  [ngStyle]="{visibility: isValid()? 'hidden' : 'visible'}"
-  class="single-selector-error">
-  {{errorMessage}}
-</div>
+</paper-listbox>
