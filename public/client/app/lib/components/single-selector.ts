@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ContentChild, ElementRef, HostListener, Input, TemplateRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChild, ElementRef, HostListener, Input, OnDestroy, TemplateRef } from '@angular/core'; // tslint:disable-line
 
 import { PolymerValueType } from './polymer-form';
 import { ViewChild } from '@angular/core';
@@ -15,7 +15,7 @@ import { isParentElementOf } from '../utils';
   templateUrl: 'single-selector.html'
 })
 
-export class SingleSelectorComponent {
+export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
 
   @ContentChild(TemplateRef) template: TemplateRef<any>;
 
@@ -32,6 +32,7 @@ export class SingleSelectorComponent {
 
   hideListbox = true;
 
+  private cyListbox = 0;
   private listener: Function;
   private originals;
 
@@ -74,13 +75,16 @@ export class SingleSelectorComponent {
 
   /** Show the listbox */
   showListbox(target: any): void {
-    if (target.focused)
+    if (target.focused) {
       this.hideListbox = false;
+      this.reposition(this.listbox.nativeElement, this.element.nativeElement);
+    }
   }
 
   /** Toggle show/hide the listbox */
   toggleListbox(): void {
     this.hideListbox = !this.hideListbox;
+    this.reposition(this.listbox.nativeElement, this.element.nativeElement);
   }
 
   // property accessors / mutators
@@ -123,6 +127,56 @@ export class SingleSelectorComponent {
       this.hideListbox = true;
       if (this.listener)
         this.listener();
+    }
+  }
+
+  // lifecycle methods
+
+  ngAfterViewInit(): void {
+    document.body.appendChild(this.listbox.nativeElement);
+    this.cyListbox = this.listbox.nativeElement.offsetHeight;
+  }
+
+  ngOnDestroy(): void {
+    document.body.removeChild(this.listbox.nativeElement);
+  }
+
+  // private methods
+
+  private reposition(ctrl: HTMLElement,
+                     by: HTMLElement): void {
+    ctrl.style.position = 'absolute';
+    // gather coordinates
+    const byBox = <DOMRect>by.getBoundingClientRect();
+    const viewport = <DOMRect>document.body.getBoundingClientRect();
+    // the nominal listbox "ctrl" position is just below the "by" control
+    const nominal = { x: byBox.x, y: byBox.y + byBox.height - 8, width: byBox.width };
+    // highly unlikely as the "by" is visible, but we may be too wide"
+    if ((nominal.x + nominal.width) > viewport.width)
+      nominal.x = viewport.width - nominal.width;
+    ctrl.style.left = `${nominal.x}px`;
+    ctrl.style.width = `${nominal.width}px`;
+    // how much open spave above and below?
+    const cyAbove = byBox.y;
+    const cyBelow = viewport.height - nominal.y;
+    // ideal spot is just below
+    if (cyBelow > this.cyListbox) {
+      ctrl.style.top = `${nominal.y}px`;
+      ctrl.style.height = `${this.cyListbox}px`;
+    }
+    // otherwise just above
+    else if (cyAbove > this.cyListbox) {
+      ctrl.style.top = `${byBox.y - this.cyListbox}px`;
+      ctrl.style.height = `${this.cyListbox}px`;
+    }
+    // otherwise we have to trim the height
+    else if (cyBelow > cyAbove) {
+      ctrl.style.top = `${nominal.y}px`;
+      ctrl.style.height = `${cyBelow}px`;
+    }
+    else {
+      ctrl.style.top = '0px';
+      ctrl.style.height = `${cyAbove}px`;
     }
   }
 
