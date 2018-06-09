@@ -94,7 +94,7 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
 
   @Input()
   set items(items: any[]) {
-    this.originals = items.map(item => {
+    this.originals = (items || []).map(item => {
       return (typeof item === 'string')?
         { [this.itemLabelPath]: item, [this.itemValuePath]: item } : item;
     });
