@@ -9,27 +9,22 @@
 <lib-polymer-form
   [preSubmit]="true"
   #form
-  focus="name"
-  fxLayout="column"
-  fxLayoutAlign="start stretch"
-  fxLayoutGap="16px"
+  focus="period"
   stickyKey="lib.test-form">
 
-  <div>
-    <paper-input
-      [sticky]="true"
-      auto-validate
-      error-message="Age must be between 18 and 70"
-      label="Age"
-      max="70"
-      min="18"
-      name="age"
-      libPolymerControl
-      prevent-invalid-input
-      required
-      type="number">
-    </paper-input>
-  </div>
+  <paper-input
+    [sticky]="true"
+    auto-validate
+    error-message="Age must be between 18 and 70"
+    label="Age"
+    max="70"
+    min="18"
+    name="age"
+    libPolymerControl
+    prevent-invalid-input
+    required
+    type="number">
+  </paper-input>
 
   <div
     fxLayout="row"
@@ -54,103 +49,93 @@
     </paper-checkbox>
   </div>
 
-  <div>
-    <paper-input
-      [sticky]="true"
-      auto-validate
-      error-message="Name is always required"
-      label="Name"
-      name="name"
-      libPolymerControl
-      prevent-invalid-input
-      required
-      type="text">
-      <iron-icon
-        icon="lock"
-        small
-        slot="prefix">
-      </iron-icon>
-      <div slot="suffix">
-        <paper-icon-button
-          (click)="form.clear('name')"
-          icon="clear"
-          suffix
-          tabindex="-1">
-        </paper-icon-button>
-        <paper-tooltip>Clear name</paper-tooltip>
-      </div>
-    </paper-input>
-  </div>
+  <paper-input
+    [sticky]="true"
+    auto-validate
+    error-message="Name is always required"
+    label="Name"
+    name="name"
+    libPolymerControl
+    prevent-invalid-input
+    required
+    type="text">
+    <iron-icon
+      icon="lock"
+      small
+      slot="prefix">
+    </iron-icon>
+    <div slot="suffix">
+      <paper-icon-button
+        (click)="form.clear('name')"
+        icon="clear"
+        suffix
+        tabindex="-1">
+      </paper-icon-button>
+      <paper-tooltip>Clear name</paper-tooltip>
+    </div>
+  </paper-input>
 
-  <div>
-    <paper-radio-group
-      [sticky]="true"
-      libPolymerControl
-      name="gender">
-      <paper-radio-button
-        name="male">
-        Male
-      </paper-radio-button>
-      <paper-radio-button
-        name="female">
-        Female
-      </paper-radio-button>
-    </paper-radio-group>
-  </div>
+  <paper-radio-group
+    [sticky]="true"
+    libPolymerControl
+    name="gender">
+    <paper-radio-button
+      name="male">
+      Male
+    </paper-radio-button>
+    <paper-radio-button
+      name="female">
+      Female
+    </paper-radio-button>
+  </paper-radio-group>
 
-  <div>
-    <lib-single-selector
-      [disabled]="false"
-      [items]="partners"
-      [required]="true"
-      [sticky]="true"
-      errorMessage="Partner is always required"
-      label="Partner"
-      libPolymerControl
-      name="partner">
-      <ng-template let-item>
-        <paper-item>
-          <div>
-            <img
-              [src]="item.logo"
-              style="max-height: 32px">
-            <div
-              style="font-size: 0.66rem">
-              {{item.label}}
-            </div>
+  <lib-single-selector
+    [disabled]="false"
+    [items]="partners"
+    [required]="true"
+    [sticky]="true"
+    errorMessage="Partner is always required"
+    label="Partner"
+    libPolymerControl
+    name="partner">
+    <ng-template let-item>
+      <paper-item>
+        <div>
+          <img
+            [src]="item.logo"
+            style="max-height: 32px">
+          <div
+            style="font-size: 0.66rem">
+            {{item.label}}
           </div>
-        </paper-item>
-      </ng-template>
-    </lib-single-selector>
-  </div>
+        </div>
+      </paper-item>
+    </ng-template>
+  </lib-single-selector>
 
-  <div>
-    <lib-single-selector
-      [required]="true"
-      [sticky]="true"
-      errorMessage="Period is always required"
-      label="Period"
-      libPeriods
-      libPolymerControl
-      name="period"
-      period="ago">
-      <div
-        [ngClass]="'path'"
-        class="http-parameter-in"
-        slot="prefix">
-        path
-      </div>
-    </lib-single-selector>
-  </div>
+  <lib-single-selector
+    [required]="true"
+    [sticky]="true"
+    errorMessage="Period is always required"
+    label="Period"
+    libPeriods
+    libPolymerControl
+    name="period"
+    period="ago">
+    <div
+      [ngClass]="'path'"
+      class="http-parameter-in"
+      slot="prefix">
+      path
+    </div>
+  </lib-single-selector>
 
-  <div>
-    <paper-toggle-button
-      [sticky]="true"
-      libPolymerControl
-      name="active">
-      Active on/off
-    </paper-toggle-button>
-  </div>
+  <paper-toggle-button
+    [sticky]="true"
+    libPolymerControl
+    name="active">
+    Active on/off
+  </paper-toggle-button>
 
   <div>
     <div>Severity</div>
@@ -167,34 +152,30 @@
     </paper-slider>
   </div>
 
-  <div>
-    <paper-input
-      [sticky]="true"
-      label="Count"
-      name="count"
-      libPolymerControl
-      type="number">
-    </paper-input>
-  </div>
+  <paper-input
+    [sticky]="true"
+    label="Count"
+    name="count"
+    libPolymerControl
+    type="number">
+  </paper-input>
 
-  <div>
-    <lib-multi-selector
-      [required]="true"
-      [sortLabels]="false"
-      [sticky]="true"
-      errorMessage="Days of week are always required"
-      label="Days Of Week"
-      name="daysOfWeek"
-      libDaysOfWeek
-      libPolymerControl
-      separator=",">
-      <div
-        slot="prefix"
-        style="font-size: 10px; padding-right: 4px">
-        HEADER
-      </div>
-    </lib-multi-selector>
-  </div>
+  <lib-multi-selector
+    [required]="true"
+    [sortLabels]="false"
+    [sticky]="true"
+    errorMessage="Days of week are always required"
+    label="Days Of Week"
+    name="daysOfWeek"
+    libDaysOfWeek
+    libPolymerControl
+    separator=",">
+    <div
+      slot="prefix"
+      style="font-size: 10px; padding-right: 4px">
+      HEADER
+    </div>
+  </lib-multi-selector>
 
   <div
     fxLayout="row"

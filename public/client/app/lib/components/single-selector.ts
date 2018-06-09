@@ -1,7 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChild, ElementRef, HostListener, Input, OnDestroy, TemplateRef } from '@angular/core'; // tslint:disable-line
 
-import { LifecycleComponent } from './lifecycle-component';
-import { OnChange } from '../decorators/onchange';
 import { PolymerValueType } from './polymer-form';
 import { ViewChild } from '@angular/core';
 import { isParentElementOf } from '../utils';
@@ -17,8 +15,7 @@ import { isParentElementOf } from '../utils';
   templateUrl: 'single-selector.html'
 })
 
-export class SingleSelectorComponent extends LifecycleComponent
-                                     implements AfterViewInit, OnDestroy {
+export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
 
   @ContentChild(TemplateRef) template: TemplateRef<any>;
 
@@ -26,7 +23,6 @@ export class SingleSelectorComponent extends LifecycleComponent
   @Input() errorMessage = '';
   @Input() itemLabelPath = 'label';
   @Input() itemValuePath = 'value';
-  @Input() items = [];
   @Input() label = '';
   @Input() required = false;
 
@@ -35,14 +31,13 @@ export class SingleSelectorComponent extends LifecycleComponent
 
   hideListbox = true;
 
-  private cyListbox = 0;
   private listener: Function;
+
+  private filtered = [];
   private originals = [];
 
   /** ctor */
-  constructor(private element: ElementRef) {
-    super();
-  }
+  constructor(private element: ElementRef) { }
 
   /** Clear control */
   clear(): void {
@@ -53,17 +48,18 @@ export class SingleSelectorComponent extends LifecycleComponent
   filterItems(filter: string): void {
     if (filter && (filter.length > 0)) {
       const match = this.originals.some(item => item[this.itemLabelPath] === filter);
-      this.items = match? this.originals : this.originals.filter(item => {
+      this.filtered = match? this.originals : this.originals.filter(item => {
         return item[this.itemLabelPath].toLowerCase().includes(filter.toLowerCase());
       });
-      if (this.items.length === 0)
-        this.items = this.originals;
+      if (this.filtered.length === 0)
+        this.filtered = this.originals;
     }
   }
 
   /** Focus control */
   focus(): void {
-    this.input.nativeElement.focus();
+    // TODO: this causes trouble because we don't want to show the dropdown initially
+    // this.input.nativeElement.focus();
   }
 
   /** Is this control valid? */
@@ -92,18 +88,31 @@ export class SingleSelectorComponent extends LifecycleComponent
 
   // property accessors / mutators
 
+  get items(): any[] {
+    return this.originals;
+  }
+
+  @Input()
+  set items(items: any[]) {
+    this.originals = items.map(item => {
+      return (typeof item === 'string')?
+        { [this.itemLabelPath]: item, [this.itemValuePath]: item } : item;
+    });
+    this.filtered = this.originals.slice(0);
+  }
+
   get value(): PolymerValueType {
     const label = this.input.nativeElement.value;
-    const item = this.items
+    const item = this.originals
       .find(item => item[this.itemLabelPath] === label);
     return item? item[this.itemValuePath] : null;
   }
 
   set value(value: PolymerValueType) {
-    const ix = this.items
+    const ix = this.originals
       .findIndex(item => item[this.itemValuePath] === value);
     this.input.nativeElement.value = (ix !== -1)?
-      this.items[ix][this.itemLabelPath] : null;
+      this.originals[ix][this.itemLabelPath] : null;
     this.listbox.nativeElement.select(ix);
   }
 
@@ -116,34 +125,17 @@ export class SingleSelectorComponent extends LifecycleComponent
 
   onSelect(selected: number): void {
     if ((selected != null) && (selected !== -1)) {
-      this.input.nativeElement.value = this.items?
-        this.items[selected][this.itemLabelPath] : null;
+      this.input.nativeElement.value = this.filtered[selected][this.itemLabelPath];
       this.hideListbox = true;
       if (this.listener)
         this.listener();
     }
   }
 
-  // bind OnChange handlers
-
-  @OnChange('items') newItems() {
-    if (!this.items)
-      this.items = [];
-    if (this.items.length > 0) {
-      this.items = this.items.map(item => {
-        return (typeof item === 'string')?
-          { [this.itemLabelPath]: item, [this.itemValuePath]: item } : item;
-      });
-    }
-    this.originals = this.items.slice(0);
-  }
-
   // lifecycle methods
 
   ngAfterViewInit(): void {
-    this.newItems();
     document.body.appendChild(this.listbox.nativeElement);
-    this.cyListbox = this.listbox.nativeElement.offsetHeight;
   }
 
   ngOnDestroy(): void {
@@ -157,6 +149,7 @@ export class SingleSelectorComponent extends LifecycleComponent
     ctrl.style.position = 'absolute';
     // gather coordinates
     const byBox = <DOMRect>by.getBoundingClientRect();
+    const ctrlBox = <DOMRect>ctrl.getBoundingClientRect();
     const viewport = <DOMRect>document.body.getBoundingClientRect();
     // the nominal listbox "ctrl" position is just below the "by" control
     const nominal = { x: byBox.x, y: byBox.y + byBox.height - 8, width: byBox.width };
@@ -169,14 +162,14 @@ export class SingleSelectorComponent extends LifecycleComponent
     const cyAbove = byBox.y;
     const cyBelow = viewport.height - nominal.y;
     // ideal spot is just below
-    if (cyBelow > this.cyListbox) {
+    if (cyBelow > ctrlBox.height) {
       ctrl.style.top = `${nominal.y}px`;
-      ctrl.style.height = `${this.cyListbox}px`;
+      ctrl.style.height = `${ctrlBox.height}px`;
     }
     // otherwise just above
-    else if (cyAbove > this.cyListbox) {
-      ctrl.style.top = `${byBox.y - this.cyListbox}px`;
-      ctrl.style.height = `${this.cyListbox}px`;
+    else if (cyAbove > ctrlBox.height) {
+      ctrl.style.top = `${byBox.y - ctrlBox.height}px`;
+      ctrl.style.height = `${ctrlBox.height}px`;
     }
     // otherwise we have to trim the height
     else if (cyBelow > cyAbove) {

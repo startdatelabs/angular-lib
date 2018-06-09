@@ -2,14 +2,21 @@
   display: block;
 }
 
-.http-parameter-in {
-  display: inline-block;
-  font-size: 10px !important;
-  min-width: 40px;
-  padding-right: 4px;
-  text-transform: uppercase;
-}
+lib-polymer-form {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: 1fr;
 
-.http-parameter-in.path {
-  color: var(--paper-yellow-700);
+  .http-parameter-in {
+    display: inline-block;
+    font-size: 10px !important;
+    min-width: 40px;
+    padding-right: 4px;
+    text-transform: uppercase;
+  }
+
+  .http-parameter-in.path {
+    color: var(--paper-yellow-700);
+  }
+
 }
