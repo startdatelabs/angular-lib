@@ -38,7 +38,7 @@ import { DateFormatPipe, DurationPipe, FromUnixTimePipe, TimeAgoPipe, UTCFormatP
 import { DaysOfWeekComboDirective, DaysOfWeekMultiDirective } from './directives/days-of-week';
 import { MultiSelectorComponent, MultiSelectorControlDirective } from './components/multi-selector';
 import { NavigatorComponent, NavigatorGroupComponent, NavigatorItemComponent } from './components/navigator';
-import { PeriodDirective, PeriodsComboDirective, PeriodsMultiDirective } from './directives/periods';
+import { PeriodDirective, PeriodsDirective } from './directives/periods';
 import { PolymerControlDirective, PolymerFormComponent } from './components/polymer-form';
 
 import { AnimatedRouterOutletComponent } from './components/animated-router-outlet';
@@ -122,8 +122,7 @@ const COMPONENTS = [
   PageableDataComponent,
   PagedDataTableComponent,
   PeriodDirective,
-  PeriodsComboDirective,
-  PeriodsMultiDirective,
+  PeriodsDirective,
   PolymerAppComponent,
   PolymerControlDirective,
   PolymerFormComponent,

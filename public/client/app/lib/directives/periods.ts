@@ -1,7 +1,5 @@
 import { ChangeDetectorRef, Directive, ElementRef, Input, ViewContainerRef } from '@angular/core';
 
-import { MultiSelectorComponent } from '../components/multi-selector';
-import { SingleSelectorComponent } from '../components/single-selector';
 import { config } from '../config';
 import { toSelectorLookup } from '../utils';
 
@@ -86,36 +84,14 @@ export class PeriodDirective {
 }
 
 /**
- * A directive to support selection of periods in <lib-single-selector>
+ * A directive to support selection of periods in <lib-multi/single-selector>
  */
 
 @Directive ({
-  selector: 'lib-single-selector[libPeriods]'
+  selector: '[libPeriods]'
 })
 
-export class PeriodsComboDirective {
-
-  /** ctor */
-  constructor(private vcf: ViewContainerRef) { }
-
-  @Input() set period(period: string) {
-    if (period) {
-      const selector: SingleSelectorComponent = (<any>this.vcf)._data.componentView.component;
-      selector.items = getPeriods(period);
-    }
-  }
-
-}
-
-/**
- * A directive to support selection of periods in <lib-multi-selector>
- */
-
-@Directive ({
-  selector: 'lib-multi-selector[libPeriods]'
-})
-
-export class PeriodsMultiDirective {
+export class PeriodsDirective {
 
   /** ctor */
   constructor(private cdf: ChangeDetectorRef,
@@ -124,8 +100,8 @@ export class PeriodsMultiDirective {
   @Input() set period(period: string) {
     if (period) {
       // https://github.com/angular/angular/issues/8277
-      const multi: MultiSelectorComponent = (<any>this.vcf)._data.componentView.component;
-      multi.items = getPeriods(period);
+      const selector = (<any>this.vcf)._data.componentView.component;
+      selector.items = getPeriods(period);
       this.cdf.markForCheck();
     }
   }
