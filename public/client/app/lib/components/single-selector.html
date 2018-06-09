@@ -16,15 +16,15 @@
   <div slot="suffix">
 
     <paper-icon-button
-      (click)="clear()"
-      icon="clear"
+      (mousedown)="toggleListbox()"
+      [icon]="hideListbox? 'arrow-drop-down' : 'arrow-drop-up'"
       suffix
       tabindex="-1">
     </paper-icon-button>
 
     <paper-icon-button
-      (mousedown)="toggleListbox()"
-      [icon]="hideListbox? 'arrow-drop-down' : 'arrow-drop-up'"
+      (click)="clear()"
+      icon="clear"
       suffix
       tabindex="-1">
     </paper-icon-button>
