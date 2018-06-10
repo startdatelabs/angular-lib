@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input, ViewChild } from '@angular/core';
-
-import { PolymerFormComponent } from '../../lib/components/polymer-form';
+import { PolymerFormComponent, PolymerValueType } from '../../lib/components/polymer-form';
 
 /**
  * Test form component
@@ -27,5 +26,10 @@ export class TestFormComponent {
     {label: 'Appcast', value: 'appcast', logo: 'assets/appcast.png'},
     {label: 'StartWire', value: 'startwire', logo: 'assets/startwire.png'}
   ];
+
+  /** Log changes to single selectors */
+  logIt(value: PolymerValueType): void {
+    console.log(`Changed to ${value}`);
+  }
 
 }

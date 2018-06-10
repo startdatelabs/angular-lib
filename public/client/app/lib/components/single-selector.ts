@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChild, ElementRef, HostListener, Input, OnDestroy, TemplateRef } from '@angular/core'; // tslint:disable-line
+import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChild, ElementRef, EventEmitter, HostListener, Input, OnDestroy, Output, TemplateRef } from '@angular/core'; // tslint:disable-line
 
 import { PolymerValueType } from './polymer-form';
 import { ViewChild } from '@angular/core';
@@ -25,6 +25,8 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
   @Input() itemValuePath = 'value';
   @Input() label = '';
   @Input() required = false;
+
+  @Output() change = new EventEmitter<PolymerValueType>();
 
   @ViewChild('input') input: ElementRef;
   @ViewChild('listbox') listbox: ElementRef;
@@ -127,6 +129,7 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
     if ((selected != null) && (selected !== -1)) {
       this.input.nativeElement.value = this.filtered[selected][this.itemLabelPath];
       this.hideListbox = true;
+      this.change.emit(this.value);
       if (this.listener)
         this.listener();
     }

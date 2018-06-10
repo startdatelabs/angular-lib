@@ -90,6 +90,7 @@
   </paper-radio-group>
 
   <lib-single-selector
+    (change)="logIt($event)"
     [disabled]="false"
     [items]="partners"
     [required]="true"
@@ -114,6 +115,7 @@
   </lib-single-selector>
 
   <lib-single-selector
+    (change)="logIt($event)"
     [required]="true"
     [sticky]="true"
     errorMessage="Period is always required"
