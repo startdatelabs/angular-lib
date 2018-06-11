@@ -19,7 +19,8 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
 
   @ContentChild(TemplateRef) template: TemplateRef<any>;
 
-  // TODO: we will leave this as a hack for now: for allowCustomValue to work, the values at [itemLabelParth] and [itemValuePath] must be identical
+  // TODO: we will leave this as a hack for now: for allowCustomValue to work, 
+  // the values at [itemLabelPath] and [itemValuePath] must be identical
   @Input() allowCustomValue = false;
   @Input() allowedPattern;
   @Input() disabled = false;
@@ -39,6 +40,7 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
   filtered = [];
   originals = [];
 
+  private cached: PolymerValueType;
   private listener: Function;
 
   /** ctor */
@@ -84,16 +86,19 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
         { [this.itemLabelPath]: item, [this.itemValuePath]: item } : item;
     });
     this.filtered = this.originals.slice(0);
+    // reset the value based on the new items
+    this.value = this.cached;
   }
 
   get value(): PolymerValueType {
     const label = this.input.nativeElement.value;
     const item = this.originals
       .find(item => item[this.itemLabelPath] === label);
-    return item? item[this.itemValuePath] : null;
+    return item? item[this.itemValuePath] : this.cached;
   }
 
   set value(value: PolymerValueType) {
+    this.cached = value;
     const ix = this.originals
       .findIndex(item => item[this.itemValuePath] === value);
     this.input.nativeElement.value = (ix !== -1)?
