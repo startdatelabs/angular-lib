@@ -19,6 +19,9 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
 
   @ContentChild(TemplateRef) template: TemplateRef<any>;
 
+  // TODO: we will leave this as a hack for now: for allowCustomValue to work, the values at [itemLabelParth] and [itemValuePath] must be identical
+  @Input() allowCustomValue = false;
+  @Input() allowedPattern;
   @Input() disabled = false;
   @Input() errorMessage = '';
   @Input() itemLabelPath = 'label';
@@ -33,10 +36,10 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
 
   hideListbox = true;
 
-  private listener: Function;
+  filtered = [];
+  originals = [];
 
-  private filtered = [];
-  private originals = [];
+  private listener: Function;
 
   /** ctor */
   constructor(private element: ElementRef) { }
@@ -44,18 +47,6 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
   /** Clear control */
   clear(): void {
     this.value = null;
-  }
-
-  /** Filter selectable items */
-  filterItems(filter: string): void {
-    if (filter && (filter.length > 0)) {
-      const match = this.originals.some(item => item[this.itemLabelPath] === filter);
-      this.filtered = match? this.originals : this.originals.filter(item => {
-        return item[this.itemLabelPath].toLowerCase().includes(filter.toLowerCase());
-      });
-      if (this.filtered.length === 0)
-        this.filtered = this.originals;
-    }
   }
 
   /** Focus control */
@@ -72,14 +63,6 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
   /** Establish a change listener */
   setListener(listener: Function): void {
     this.listener = listener;
-  }
-
-  /** Show the listbox */
-  showListbox(target: any): void {
-    if (target.focused) {
-      this.hideListbox = false;
-      this.reposition(this.listbox.nativeElement, this.element.nativeElement);
-    }
   }
 
   /** Toggle show/hide the listbox */
@@ -123,6 +106,30 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
   @HostListener('window:click', ['$event']) onClick(event): void {
     if (!isParentElementOf(this.element.nativeElement, event.target))
       this.hideListbox = true;
+  }
+
+  onChange(value: string): void {
+    if (value && (value.length > 0)) {
+      const match = this.originals.some(item => item[this.itemLabelPath] === value);
+      this.filtered = match ? this.originals : this.originals.filter(item => {
+        return item[this.itemLabelPath].toLowerCase().includes(value.toLowerCase());
+      });
+      if (this.filtered.length === 0)
+        this.filtered = this.originals;
+    }
+    // if custom values allowed, propagate change
+    if (this.allowCustomValue) {
+      this.change.emit(value);
+      if (this.listener)
+        this.listener();
+    }
+  }
+
+  onFocus(target: any): void {
+    if (target.focused) {
+      this.hideListbox = false;
+      this.reposition(this.listbox.nativeElement, this.element.nativeElement);
+    }
   }
 
   onSelect(selected: number): void {

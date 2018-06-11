@@ -1,10 +1,11 @@
 <paper-input
-  (focused-changed)="showListbox($event.target)"
-  (value-changed)="filterItems($event.target.value)"
-  [disabled]="disabled"
+  (focused-changed)="onFocus($event.target)"
+  (value-changed)="onChange($event.target.value)"
+  [allowedPattern]="allowedPattern"
+  [disabled]="disabled || ((originals.length === 0) && !allowCustomValue)"
   [errorMessage]="errorMessage"
   [label]="label"
-  [readonly]="true"
+  [readonly]="!allowCustomValue"
   [required]="required"
   auto-validate
   prevent-invalid-input
