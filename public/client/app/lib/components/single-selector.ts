@@ -97,6 +97,7 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
     return item? item[this.itemValuePath] : this.cached;
   }
 
+  @Input()
   set value(value: PolymerValueType) {
     this.cached = value;
     const ix = this.originals
