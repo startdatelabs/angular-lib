@@ -125,6 +125,8 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
     }
     // if custom values allowed, propagate change
     if (this.allowCustomValue) {
+      // TODO: temporary hack!
+      this.cached = value;
       this.change.emit(value);
       if (this.listener)
         this.listener();
