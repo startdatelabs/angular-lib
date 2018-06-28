@@ -1,7 +1,17 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ContentChild, ElementRef, EventEmitter, HostListener, Input, OnDestroy, Output, TemplateRef } from '@angular/core'; // tslint:disable-line
-
+import { AfterViewInit } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { Component } from '@angular/core';
+import { ContentChild } from '@angular/core';
+import { ElementRef } from '@angular/core';
+import { EventEmitter } from '@angular/core';
+import { HostListener } from '@angular/core';
+import { Input } from '@angular/core';
+import { OnDestroy } from '@angular/core';
+import { Output } from '@angular/core';
 import { PolymerValueType } from './polymer-form';
+import { TemplateRef } from '@angular/core';
 import { ViewChild } from '@angular/core';
+
 import { isParentElementOf } from '../utils';
 
 /**
@@ -49,6 +59,9 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
   /** Clear control */
   clear(): void {
     this.value = null;
+    this.change.emit(this.value);
+    if (this.listener)
+      this.listener();
   }
 
   /** Focus control */
