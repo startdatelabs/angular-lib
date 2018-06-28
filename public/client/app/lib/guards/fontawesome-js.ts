@@ -1,9 +1,13 @@
-import { CanActivate, CanActivateChild } from '@angular/router';
-import { Observable, from, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-
 import { AsyncLoader } from '../utils/async-loader';
+import { CanActivate } from '@angular/router';
+import { CanActivateChild } from '@angular/router';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { catchError } from 'rxjs/operators';
+import { from } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 /**
  * Loads Font Awesome 5 (SVG with JS version)
@@ -23,7 +27,7 @@ export class FontAwesomeJSGuard implements CanActivate, CanActivateChild {
   // private methods
 
   private _canActivate(): Observable<boolean> {
-    const script = 'https://use.fontawesome.com/releases/v5.0.6/js/all.js';
+    const script = 'https://use.fontawesome.com/releases/v5.1.0/js/all.js';
     return from(AsyncLoader.js(script)).pipe(
       catchError((x: any) => of(false)),
       map((x: any) => true)
