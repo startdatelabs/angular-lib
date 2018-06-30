@@ -1,7 +1,6 @@
-import { BehaviorSubject, Subscription } from 'rxjs';
-
 import { AfterContentInit } from '@angular/core';
 import { AutoUnsubscribe } from '../decorators/auto-unsubscribe';
+import { BehaviorSubject } from 'rxjs';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { Component } from '@angular/core';
 import { ContentChildren } from '@angular/core';
@@ -18,7 +17,9 @@ import { OnInit } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { SingleSelectorComponent } from '../components/single-selector';
+import { Subscription } from 'rxjs';
 import { ViewContainerRef } from '@angular/core';
+
 import { nextTick } from '../utils';
 
 /**
@@ -443,21 +444,17 @@ export class PolymerFormComponent extends LifecycleComponent
   // private methods
 
   private listener(control: PolymerControlDirective) {
-    // NOTE: we have to do this because some controls (like DATE)
-    // don't set valid at the same time they set value
-    nextTick(() => {
-      this.model.isValid = this.isValid();
-      this.model.submitted = false;
-      this.model.values[control.name] = control.value;
-      this.model.validities[control.name] = control.isValid();
-      this.newModel();
-      // make value sticky
-      if (this.stickyKey
-       && control.sticky
-       && control.canStick()
-       && control.isValid())
-        this.lstor.set(`${this.stickyKey}.${control.name}`, control.value);
-    });
+    this.model.isValid = this.isValid();
+    this.model.submitted = false;
+    this.model.values[control.name] = control.value;
+    this.model.validities[control.name] = control.isValid();
+    this.newModel();
+    // make value sticky
+    if (this.stickyKey
+      && control.sticky
+      && control.canStick()
+      && control.isValid())
+      this.lstor.set(`${this.stickyKey}.${control.name}`, control.value);
   }
 
   private newModel() {
