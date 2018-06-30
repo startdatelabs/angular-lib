@@ -155,12 +155,14 @@ export class SingleSelectorComponent implements AfterViewInit, OnDestroy {
 
   onSelect(selected: number): void {
     if ((selected != null) && (selected !== -1)) {
-      this.cached = this.filtered[selected][this.itemValuePath];
-      this.input.nativeElement.value = this.filtered[selected][this.itemLabelPath];
-      this.hideListbox = true;
-      this.change.emit(this.value);
-      if (this.listener)
-        this.listener();
+      if (this.cached !== this.filtered[selected][this.itemValuePath]) {
+        this.cached = this.filtered[selected][this.itemValuePath];
+        this.input.nativeElement.value = this.filtered[selected][this.itemLabelPath];
+        this.hideListbox = true;
+        this.change.emit(this.value);
+        if (this.listener)
+          this.listener();
+      }
     }
   }
 
