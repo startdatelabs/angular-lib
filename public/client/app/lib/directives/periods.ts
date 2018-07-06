@@ -37,6 +37,7 @@ const MONTHS = [
 const RECENT = [
   {label: 'Today', value: 'TODAY'},
   {label: 'Yesterday', value: 'YESTERDAY'},
+  {label: 'Past 2 days', value: 'PAST_2_DAYS'},
   {label: 'Past 3 days', value: 'PAST_3_DAYS'},
   {label: 'Past 5 days', value: 'PAST_5_DAYS'},
   {label: 'Past 7 days', value: 'PAST_7_DAYS'}
@@ -45,6 +46,7 @@ const RECENT = [
 const RELATIVE = [
   {label: 'Today', value: 'TODAY'},
   {label: 'Yesterday', value: 'YESTERDAY'},
+  {label: 'Past 2 days', value: 'PAST_2_DAYS'},
   {label: 'Past 3 days', value: 'PAST_3_DAYS'},
   {label: 'Past 5 days', value: 'PAST_5_DAYS'},
   {label: 'Past 7 days', value: 'PAST_7_DAYS'},
