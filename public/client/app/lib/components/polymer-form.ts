@@ -444,17 +444,21 @@ export class PolymerFormComponent extends LifecycleComponent
   // private methods
 
   private listener(control: PolymerControlDirective) {
-    this.model.isValid = this.isValid();
-    this.model.submitted = false;
-    this.model.values[control.name] = control.value;
-    this.model.validities[control.name] = control.isValid();
-    this.newModel();
-    // make value sticky
-    if (this.stickyKey
-      && control.sticky
-      && control.canStick()
-      && control.isValid())
-      this.lstor.set(`${this.stickyKey}.${control.name}`, control.value);
+    // NOTE: we have to do this because some controls (like DATE)
+    // don't set valid at the same time they set value
+    nextTick(() => {
+      this.model.isValid = this.isValid();
+      this.model.submitted = false;
+      this.model.values[control.name] = control.value;
+      this.model.validities[control.name] = control.isValid();
+      this.newModel();
+      // make value sticky
+      if (this.stickyKey
+       && control.sticky
+       && control.canStick()
+       && control.isValid())
+        this.lstor.set(`${this.stickyKey}.${control.name}`, control.value);
+    });
   }
 
   private newModel() {

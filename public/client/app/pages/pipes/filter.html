@@ -6,21 +6,22 @@
   fxLayout="row"
   fxLayoutAlign="end start"
   fxLayoutGap="16px"
-  stickyKey="lib.test-filter">
+  stickyKey="lib.test-pipes-filter">
 
   <paper-input
+    [sticky]="true"
     auto-validate
     error-message="Number is required"
     label="Test Number"
-    name="number"
     libPolymerControl
+    name="number"
     prevent-invalid-input
     required
-    type="number"
-    [sticky]="true">
+    type="number">
   </paper-input>
 
   <paper-input
+    [sticky]="true"
     auto-validate
     error-message="Date is required"
     label="UTC Date"
@@ -28,8 +29,7 @@
     name="date"
     prevent-invalid-input
     required
-    type="text"
-    [sticky]="true">
+    type="date">
   </paper-input>
 
   <paper-button

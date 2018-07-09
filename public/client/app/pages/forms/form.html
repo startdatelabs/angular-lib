@@ -162,6 +162,18 @@
     type="number">
   </paper-input>
 
+  <paper-input
+    [sticky]="true"
+    auto-validate
+    error-message="Date is required"
+    label="Date"
+    name="date"
+    libPolymerControl
+    prevent-invalid-input
+    required
+    type="date">
+  </paper-input>
+
   <lib-multi-selector
     [required]="true"
     [sortLabels]="false"
