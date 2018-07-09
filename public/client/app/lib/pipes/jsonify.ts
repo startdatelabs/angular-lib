@@ -1,4 +1,5 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe } from '@angular/core';
+import { PipeTransform } from '@angular/core';
 
 
 /**
@@ -20,7 +21,7 @@ export class JSONifyPipe implements PipeTransform {
     if (s == null)
       return dflt;
     else if (Array.isArray(s) || (typeof s === 'object'))
-      return `${JSON.stringify(s, null, ' ').replace(new RegExp('"', 'g'), '')}`;
+      return `${JSON.stringify(s, null, ' ')}`;
     else return s;
   }
 
