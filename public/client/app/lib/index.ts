@@ -71,6 +71,7 @@ import { WorkingButtonComponent } from './components/working-button';
 import '@polymer/iron-collapse/iron-collapse.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
+import '@polymer/iron-icons/maps-icons.js';
 import '@polymer/iron-image/iron-image.js';
 import '@polymer/iron-label/iron-label.js';
 import '@polymer/neon-animation/animations/fade-out-animation.js';
