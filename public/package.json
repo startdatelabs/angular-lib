@@ -1,6 +1,6 @@
 {
   "name": "@startdatelabs/angular-lib",
-  "version": "1.0.86",
+  "version": "1.0.85",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -14,7 +14,7 @@
     "@angular/compiler": "6",
     "@angular/compiler-cli": "6",
     "@angular/core": "6",
-    "@angular/flex-layout": "6.0.0-beta.18",
+    "@angular/flex-layout": "^6.0.0-beta.18",
     "@angular/forms": "6",
     "@angular/http": "6",
     "@angular/platform-browser": "6",
@@ -91,7 +91,7 @@
     "rxjs-compat": "6",
     "ts-node": "6",
     "tslint": "5",
-    "typescript": "~2.7",
+    "typescript": "~2.9.2",
     "web-animations-js": "2",
     "yargs": "11",
     "zone.js": "^0.8.26"
